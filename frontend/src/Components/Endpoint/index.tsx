@@ -26,8 +26,16 @@ const Endpoint = (props: Props) => {
 
   const getData = async () => {
     setIsLoading(true);
-    // check this
-    const response = await fetch(`https://quickstart-lwsu.onrender.com/api/${props.endpoint}`, { method: "GET" });
+    ////// check this
+    const method = props.endpoint === "info" || 
+               props.endpoint === "create_link_token" || 
+               props.endpoint === "create_user_token" 
+               ? "POST" : "GET";
+
+    const response = await fetch(`https://quickstart-lwsu.onrender.com/api/${props.endpoint}`, { method });
+
+    //const response = await fetch(`https://quickstart-lwsu.onrender.com/api/${props.endpoint}`, { method: "GET" });
+    /// CHECK THIS line above is the og
     const data = await response.json();
     if (data.error != null) {
       setError(data.error);
