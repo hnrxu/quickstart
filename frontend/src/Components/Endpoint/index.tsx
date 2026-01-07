@@ -26,7 +26,8 @@ const Endpoint = (props: Props) => {
 
   const getData = async () => {
     setIsLoading(true);
-    const response = await fetch(`/api/${props.endpoint}`, { method: "GET" });
+    // check this
+    const response = await fetch(`https://quickstart-lwsu.onrender.com/api/${props.endpoint}`, { method: "GET" });
     const data = await response.json();
     if (data.error != null) {
       setError(data.error);
