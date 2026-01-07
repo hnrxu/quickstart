@@ -71,7 +71,7 @@ public class TransactionsResource {
 
     // Return the 8 most recent transactions
     added.sort(new TransactionsResource.CompareTransactionDate());
-    List<Transaction> latestTransactions = added.subList(Math.max(added.size() - 8, 0), added.size());
+    List<Transaction> latestTransactions = added;//.subList(Math.max(added.size() - 8, 0), added.size());
     return new TransactionsResponse(latestTransactions);
   }
 
