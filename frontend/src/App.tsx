@@ -124,8 +124,8 @@ const App = () => {
 
       if (isUserTokenFlow) {
         await generateUserToken();
-      }
-      generateToken(paymentInitiation);
+      } // check this
+      await generateToken(paymentInitiation);
     };
     init();
   }, [dispatch, generateToken, generateUserToken, getInfo]);
