@@ -15,7 +15,8 @@ plaid_env: ${PLAID_ENV:-sandbox}
 server:
   application_connectors:
     - type: http
-      port: 8000
+    # check this
+      port: ${PORT:-8000}
   admin_connectors:
     - type: http
       port: 8001

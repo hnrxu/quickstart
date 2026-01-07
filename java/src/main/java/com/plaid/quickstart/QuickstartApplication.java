@@ -31,8 +31,14 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
+
+import org.eclipse.jetty.servlets.CrossOriginFilter;
 
 public class QuickstartApplication extends Application<QuickstartConfiguration> {
   // We store the accessToken in memory - in production, store it in a secure
@@ -106,6 +112,23 @@ public class QuickstartApplication extends Application<QuickstartConfiguration> 
     apiClient.setPlaidAdapter(plaidEnv);
 
     plaidClient = apiClient.createService(PlaidApi.class);
+
+    ///////////////////// CHECK THIS ///////////////////
+    // --- CORS (allow your local React dev server to call this backend) ---
+    final FilterRegistration.Dynamic cors =
+        environment.servlets().addFilter("CORS", CrossOriginFilter.class);
+
+    cors.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
+    cors.setInitParameter(
+        CrossOriginFilter.ALLOWED_HEADERS_PARAM,
+        "X-Requested-With,Content-Type,Accept,Origin,Authorization"
+    );
+    cors.setInitParameter(
+        CrossOriginFilter.ALLOWED_METHODS_PARAM,
+        "OPTIONS,GET,PUT,POST,DELETE,HEAD"
+    );
+    cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+
 
     environment.jersey().register(new AccessTokenResource(plaidClient, plaidProducts));
     environment.jersey().register(new AccountsResource(plaidClient));
