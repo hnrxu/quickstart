@@ -10,7 +10,8 @@ const bodyParser = require('body-parser');
 const moment = require('moment');
 const cors = require('cors');
 
-const APP_PORT = process.env.APP_PORT || 8000;
+// check this
+const APP_PORT = process.env.PORT || 8000;
 const PLAID_CLIENT_ID = process.env.PLAID_CLIENT_ID;
 const PLAID_SECRET = process.env.PLAID_SECRET;
 const PLAID_ENV = process.env.PLAID_ENV || 'sandbox';
@@ -88,7 +89,28 @@ app.use(
   }),
 );
 app.use(bodyParser.json());
-app.use(cors());
+
+const allowedOrigins = [
+  'http://localhost:3000',          // React dev server
+  'https://your-frontend.onrender.com', // Replace with your Render frontend URL
+];
+////// check this
+const corsOptions = {
+  origin: function (origin, callback) {
+    // allow requests with no origin like Postman or server-to-server
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS not allowed from ${origin}`));
+    }
+  },
+  methods: ['GET', 'POST'],
+  credentials: true, // if you need cookies or auth headers
+};
+
+app.use(cors(corsOptions));
+///////
 
 app.post('/api/info', function (request, response, next) {
   response.json({

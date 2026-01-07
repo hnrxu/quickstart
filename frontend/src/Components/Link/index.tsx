@@ -12,7 +12,8 @@ const Link = () => {
     (public_token: string) => {
       // If the access_token is needed, send public_token to server
       const exchangePublicTokenForAccessToken = async () => {
-        const response = await fetch("/api/set_access_token", {
+        // check this
+        const response = await fetch("https://quickstart-lwsu.onrender.com/api/set_access_token", {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",

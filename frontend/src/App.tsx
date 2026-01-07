@@ -13,7 +13,8 @@ const App = () => {
     useContext(Context);
 
   const getInfo = useCallback(async () => {
-    const response = await fetch("/api/info", { method: "POST" });
+    // check this
+    const response = await fetch("https://quickstart-lwsu.onrender.com/api/info", { method: "POST" });
     if (!response.ok) {
       dispatch({ type: "SET_STATE", state: { backend: false } });
       return { paymentInitiation: false };
@@ -43,7 +44,8 @@ const App = () => {
   }, [dispatch]);
 
   const generateUserToken = useCallback(async () => {
-    const response = await fetch("api/create_user_token", { method: "POST" });
+    // check this
+    const response = await fetch("https://quickstart-lwsu.onrender.com/api/create_user_token", { method: "POST" });
     if (!response.ok) {
       dispatch({ type: "SET_STATE", state: { userToken: null, userId: null } });
       return;
@@ -75,9 +77,10 @@ const App = () => {
     async (isPaymentInitiation: boolean) => {
       // Link tokens for 'payment_initiation' use a different creation flow in your backend.
       const path = isPaymentInitiation
-        ? "/api/create_link_token_for_payment"
-        : "/api/create_link_token";
-      const response = await fetch(path, {
+      // check this
+        ? "api/create_link_token_for_payment"
+        : "api/create_link_token";
+      const response = await fetch("https://quickstart-lwsu.onrender.com/${path}", {
         method: "POST",
       });
       if (!response.ok) {
