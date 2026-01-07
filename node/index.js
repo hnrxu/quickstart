@@ -92,7 +92,7 @@ app.use(bodyParser.json());
 
 const allowedOrigins = [
   'http://localhost:3000',          // React dev server
-  'https://your-frontend.onrender.com', // Replace with your Render frontend URL
+  'https://quickstart-lwsu.onrender.com', // Replace with your Render frontend URL
 ];
 ////// check this
 const corsOptions = {
