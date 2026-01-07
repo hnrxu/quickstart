@@ -80,7 +80,7 @@ const App = () => {
       // check this
         ? "api/create_link_token_for_payment"
         : "api/create_link_token";
-      const response = await fetch("https://quickstart-lwsu.onrender.com/${path}", {
+      const response = await fetch(`https://quickstart-lwsu.onrender.com/${path}`, {
         method: "POST",
       });
       if (!response.ok) {
