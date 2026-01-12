@@ -42,7 +42,7 @@ const Transactions = () => {
             year: 'numeric',
             month: 'long',
             day: 'numeric'   
-        }).format(new Date(`${date.slice(0,3)}-${date.slice(4,5)}-${date.slice(6,7)}`));
+        }).format(new Date(`${date.slice(0,4)}-${date.slice(4,6)}-${date.slice(6,8)}`));
         return formattedDate;
     }
     

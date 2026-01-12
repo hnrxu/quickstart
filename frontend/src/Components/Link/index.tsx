@@ -62,6 +62,13 @@ const Link = () => {
   const config: Parameters<typeof usePlaidLink>[0] = {
     token: linkToken!,
     onSuccess,
+    onExit: (err, metadata) => {
+    console.log("PLAID onExit err:", err);
+    console.log("PLAID onExit metadata:", metadata);
+  },
+  onEvent: (eventName, metadata) => {
+    console.log("PLAID onEvent:", eventName, metadata);
+  },
   };
 
   if (window.location.href.includes("?oauth_state_id=")) {
