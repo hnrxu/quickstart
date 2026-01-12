@@ -7,6 +7,7 @@ import Link from "../Link";
 import Context from "../../Context";
 
 import styles from "./index.module.scss";
+import Dashboard from "../Dashboard";
 
 const Header = () => {
   const {
@@ -24,12 +25,13 @@ const Header = () => {
 
   return (
     <div className={styles.grid}>
-      <h3 className={styles.title}>Plaid Quickstart</h3>
-
+     
       {!linkSuccess ? (
         <>
+          <h3 className={styles.title}>Plaid Quickstart</h3>
+
           <h4 className={styles.subtitle}>
-            A sample end-to-end integration with Plaid
+            A sample end-to-end integration with Plaid GOOGOOGAGA
           </h4>
           <p className={styles.introPar}>
             The Plaid flow begins when your user wants to connect their bank
@@ -116,9 +118,10 @@ const Header = () => {
             </>
           ) : (
             /* If not using the payment_initiation product, show the item_id and access_token information */ <>
-              {isItemAccess ? (
+              {/* {isItemAccess ? (
                 <h4 className={styles.subtitle}>
-                  Congrats! By linking an account, you have created an{" "}
+
+                  CHECK THIS Congrats! By linking an account, you have created an{" "}
                   <InlineLink
                     href="http://plaid.com/docs/quickstart/glossary/#item"
                     target="_blank"
@@ -137,8 +140,10 @@ const Header = () => {
                     Unable to create an item. Please check your backend server
                   </Callout>
                 </h4>
-              )}
-              <div className={styles.itemAccessContainer}>
+              )} */}
+
+
+              {/* <div className={styles.itemAccessContainer}>
                 {itemId && (
                   <p className={styles.itemAccessRow}>
                     <span className={styles.idName}>item_id</span>
@@ -166,15 +171,19 @@ const Header = () => {
                     <span className={styles.tokenText}>{userId}</span>
                   </p>
                 )}
-              </div>
+              </div> */}
+
+              
               {(isItemAccess || userToken || userId) && (
                 <p className={styles.requests}>
-                  Now that you have {accessToken && "an access_token"}
+                    <Dashboard />
+                {/* CHECK THIS*/}
+                  {/* Now that you have {accessToken && "an access_token"}
                   {accessToken && (userToken || userId) && " and "}
                   {userToken && "a user_token"}
                   {userToken && userId && " and "}
                   {userId && "a user_id"}, you can make all of the
-                  following requests:
+                  following requests: */}
                 </p>
               )}
             </>

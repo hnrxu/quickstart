@@ -91,7 +91,7 @@ app.use(
 app.use(bodyParser.json());
 
 const allowedOrigins = [
-  'http://localhost:3000',          // React dev server
+  'https://quickstart-ashen.vercel.app',          // React dev server
   'https://quickstart-lwsu.onrender.com', // Replace with your Render frontend URL
 ];
 ////// check this

@@ -1,9 +1,11 @@
-import React, { useEffect, useContext, useCallback } from "react";
+import React, { useEffect, useContext, useCallback, useState } from "react";
 
 import Header from "./Components/Headers";
 import Products from "./Components/ProductTypes/Products";
 import Items from "./Components/ProductTypes/Items";
 import Context from "./Context";
+import Transactions from "./Components/Transactions";
+import Dashboard from "./Components/Dashboard";
 
 import styles from "./App.module.scss";
 import { Products as PlaidProducts } from "plaid";
@@ -130,14 +132,37 @@ const App = () => {
     init();
   }, [dispatch, generateToken, generateUserToken, getInfo]);
 
+
+
+
+
+  const [screen, setScreen] = useState("login");
+
+  useEffect(() => {
+    const changeScreen = () => {
+        if (!isPaymentInitiation && itemId) {
+            setScreen("home");
+        }
+    }
+    changeScreen();
+  }, [isPaymentInitiation, itemId])
+
+
+
   return (
     <div className={styles.App}>
       <div className={styles.container}>
         <Header />
         {linkSuccess && (
           <>
-            <Products />
-            {!isPaymentInitiation && itemId && <Items />}
+          {!isPaymentInitiation && itemId && 
+          <div>
+            
+            <Transactions />
+          </div>}
+            
+            {/* <Products />
+            {!isPaymentInitiation && itemId && <Items />} */}
           </>
         )}
       </div>
