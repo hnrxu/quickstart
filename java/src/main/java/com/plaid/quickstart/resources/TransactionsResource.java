@@ -80,10 +80,6 @@ public class TransactionsResource {
 
     PlaidReader plaidReader = new PlaidReader(latestTransactions);
     TransactionLogHost.getInstance().setLog(plaidReader.parseTransactionLog());
-   
-
-    
-
 
     return new TransactionsResponse(latestTransactions);
   }

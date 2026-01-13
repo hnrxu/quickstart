@@ -50,7 +50,9 @@ const Transactions = () => {
     }
     
     return <div>
+        {transactions.length}
         {transactions.map((t, index) => (<div 
+        
         key={t.transaction_id}>
             {showDate(index, t.date) && <div>{formatDate(t.date)}</div>}
                 <div className="transaction-info">

@@ -162,7 +162,7 @@ app.post('/api/create_link_token', function (request, response, next) {
           delete configs.user;
         }
         configs.cra_options = {
-          days_requested: 60
+          days_requested: 180
         };
         configs.consumer_report_permissible_purpose = 'ACCOUNT_REVIEW_CREDIT';
       }

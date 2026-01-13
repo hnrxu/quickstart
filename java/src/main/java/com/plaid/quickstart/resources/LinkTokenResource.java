@@ -70,21 +70,24 @@ public class LinkTokenResource {
     };
 
 
-		LinkTokenCreateRequest request = new LinkTokenCreateRequest()
-			.user(user)
-			.clientName("Quickstart Client")
-			.products(this.correctedPlaidProducts)
-			.countryCodes(this.correctedCountryCodes)
-			.language("en")
-      .redirectUri(this.redirectUri);
+    LinkTokenCreateRequest request = new LinkTokenCreateRequest()
+        .user(user)
+        .clientName("Quickstart Client")
+        .products(this.correctedPlaidProducts)
+        .countryCodes(this.correctedCountryCodes)
+        .language("en")
+        
+    .redirectUri(this.redirectUri);
 
+  
     if (this.correctedPlaidProducts.contains(Products.STATEMENTS)) {
       LinkTokenCreateRequestStatements statementsConfig = new LinkTokenCreateRequestStatements()
-        .startDate(LocalDate.now().minusDays(30))
+        .startDate(LocalDate.now().minusDays(180))
         .endDate(LocalDate.now());
       request.setStatements(statementsConfig);
     }
-
+    
+    
     if (plaidProducts.stream().anyMatch(product -> product.startsWith("cra_"))) {
       // Use user_token if available, otherwise use user_id
       if (QuickstartApplication.userToken != null) {
