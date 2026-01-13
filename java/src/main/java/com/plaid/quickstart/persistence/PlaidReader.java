@@ -102,7 +102,7 @@ public class PlaidReader {
         } else {
             // gets expense specific fields
             String storeName = plaidTransaction.getMerchantName();
-            if (storeName.equals("") || storeName.equals(null)) {
+            if (storeName == null|| storeName.equals("")) {
                 storeName = "N/A";
             }
             String categoryName = plaidTransaction.getPersonalFinanceCategory().getPrimary();
