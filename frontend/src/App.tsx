@@ -136,16 +136,7 @@ const App = () => {
 
 
 
-  const [screen, setScreen] = useState("login");
-
-  useEffect(() => {
-    const changeScreen = () => {
-        if (!isPaymentInitiation && itemId) {
-            setScreen("home");
-        }
-    }
-    changeScreen();
-  }, [isPaymentInitiation, itemId])
+  
 
 
 

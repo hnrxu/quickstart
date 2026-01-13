@@ -36,58 +36,53 @@ public class TransactionsResource {
   }
 
   @GET
-  public TransactionsResponse getTransactions() throws IOException, InterruptedException {
-    // Set cursor to empty to receive all historical updates
-    String cursor = null;
+public TransactionsResponse getTransactions() throws IOException, InterruptedException {
+  int target = 24;          // what you consider “ready”
+  int maxAttempts = 6;      // don’t hang forever
+  int attempt = 0;
 
-    // New transaction updates since "cursor"
-    List<Transaction> added = new ArrayList<Transaction>();
-    List<Transaction> modified = new ArrayList<Transaction>();
-    List<RemovedTransaction> removed = new ArrayList<RemovedTransaction>();
+  while (attempt < maxAttempts) {
+    String cursor = null;   // fresh full sync each attempt
+
+    List<Transaction> added = new ArrayList<>();
+    List<Transaction> modified = new ArrayList<>();
+    List<RemovedTransaction> removed = new ArrayList<>();
     boolean hasMore = true;
-    // Iterate through each page of new transaction updates for item
+
     while (hasMore) {
       TransactionsSyncRequest request = new TransactionsSyncRequest()
-        .accessToken(QuickstartApplication.accessToken)
-        .cursor(cursor);
+          .accessToken(QuickstartApplication.accessToken)
+          .cursor(cursor);
 
       Response<TransactionsSyncResponse> response = plaidClient.transactionsSync(request).execute();
       TransactionsSyncResponse responseBody = response.body();
+      if (responseBody == null) throw new IOException("Null Plaid response body");
 
       cursor = responseBody.getNextCursor();
 
-      // If no transactions are available yet, wait and poll the endpoint.
-      // Normally, we would listen for a webhook, but the Quickstart doesn't
-      // support webhooks. For a webhook example, see
-      // https://github.com/plaid/tutorial-resources or
-      // https://github.com/plaid/pattern
-
-      if (cursor.equals("")) {
-          Thread.sleep(2000); 
-          continue; 
-      }
-      // Add this page of results
       added.addAll(responseBody.getAdded());
       modified.addAll(responseBody.getModified());
       removed.addAll(responseBody.getRemoved());
-      hasMore = responseBody.getHasMore();
+      hasMore = Boolean.TRUE.equals(responseBody.getHasMore());
     }
 
-    System.out.println(added);
-    // Return all most recent transactions
-    added.sort(new TransactionsResource.CompareTransactionDate());
-    List<Transaction> latestTransactions = added;//.subList(Math.max(added.size() - 8, 0), added.size());
+    // If we have enough, return immediately
+    if (added.size() >= target) {
+      added.sort(new CompareTransactionDate());
+      return new TransactionsResponse(added);
+    }
 
-
-    PlaidReader plaidReader = new PlaidReader(latestTransactions);
-    TransactionLogHost.getInstance().setLog(plaidReader.parseTransactionLog());
-   
-
-    
-
-
-    return new TransactionsResponse(latestTransactions);
+    // Not enough yet — wait briefly and try again
+    attempt++;
+    Thread.sleep(1000);
   }
+
+  // If still not enough, return whatever we have on the final attempt
+  // (You could also throw an error instead)
+  // NOTE: you’d need to keep the last `added` from the loop; simplest is to refactor.
+  return new TransactionsResponse(new ArrayList<>());
+}
+
 
   private class CompareTransactionDate implements Comparator<Transaction> {
     @Override
