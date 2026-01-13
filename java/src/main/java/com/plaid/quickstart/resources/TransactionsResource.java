@@ -37,16 +37,17 @@ public class TransactionsResource {
 
   @GET
 public TransactionsResponse getTransactions() throws IOException, InterruptedException {
-  int target = 24;          // what you consider “ready”
-  int maxAttempts = 6;      // don’t hang forever
-  int attempt = 0;
+  int maxAttempts = 6;
+  int stableCountNeeded = 2;   // “same size” twice in a row
+  int stableStreak = 0;
 
-  while (attempt < maxAttempts) {
-    String cursor = null;   // fresh full sync each attempt
+  Integer lastSize = null;
+  List<Transaction> lastAdded = new ArrayList<>();
 
+  for (int attempt = 0; attempt < maxAttempts; attempt++) {
+
+    String cursor = null;
     List<Transaction> added = new ArrayList<>();
-    List<Transaction> modified = new ArrayList<>();
-    List<RemovedTransaction> removed = new ArrayList<>();
     boolean hasMore = true;
 
     while (hasMore) {
@@ -55,33 +56,33 @@ public TransactionsResponse getTransactions() throws IOException, InterruptedExc
           .cursor(cursor);
 
       Response<TransactionsSyncResponse> response = plaidClient.transactionsSync(request).execute();
-      TransactionsSyncResponse responseBody = response.body();
-      if (responseBody == null) throw new IOException("Null Plaid response body");
+      TransactionsSyncResponse body = response.body();
+      if (body == null) throw new IOException("Null Plaid response body");
 
-      cursor = responseBody.getNextCursor();
-
-      added.addAll(responseBody.getAdded());
-      modified.addAll(responseBody.getModified());
-      removed.addAll(responseBody.getRemoved());
-      hasMore = Boolean.TRUE.equals(responseBody.getHasMore());
+      cursor = body.getNextCursor();
+      added.addAll(body.getAdded());
+      hasMore = Boolean.TRUE.equals(body.getHasMore());
     }
 
-    // If we have enough, return immediately
-    if (added.size() >= target) {
-      added.sort(new CompareTransactionDate());
-      return new TransactionsResponse(added);
+    lastAdded = added;
+
+    // Check stability
+    if (lastSize != null && added.size() == lastSize) {
+      stableStreak++;
+      if (stableStreak >= stableCountNeeded) break;
+    } else {
+      stableStreak = 0;
+      lastSize = added.size();
     }
 
-    // Not enough yet — wait briefly and try again
-    attempt++;
-    Thread.sleep(1000);
+    // If still changing, wait briefly and try again
+    Thread.sleep(800);
   }
 
-  // If still not enough, return whatever we have on the final attempt
-  // (You could also throw an error instead)
-  // NOTE: you’d need to keep the last `added` from the loop; simplest is to refactor.
-  return new TransactionsResponse(new ArrayList<>());
+  lastAdded.sort(new CompareTransactionDate());
+  return new TransactionsResponse(lastAdded);
 }
+
 
 
   private class CompareTransactionDate implements Comparator<Transaction> {
