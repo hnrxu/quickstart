@@ -20,16 +20,13 @@ const Transactions = () => {
 
     useEffect(() => {
     const fetchTransactions = async () => {
-        const response = await fetch(
-        "https://quickstart-lwsu.onrender.com/api/transactions",
-        {
-            method: "GET",
-            headers: {
-            "X-Access-Token": accessToken ?? "",
-            },
-            cache: "no-store",
-        }
-        );
+        const url = `https://quickstart-lwsu.onrender.com/api/transactions?access_token=${encodeURIComponent(accessToken ?? "")}`;
+
+            const response = await fetch(url, {
+                method: "GET",
+                cache: "no-store",
+            });
+
 
         const transactionData = await response.json();
         setTransactions(transactionData.latest_transactions);
