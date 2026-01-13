@@ -84,7 +84,10 @@ public class TransactionsResource {
     JsonReaderPlaid plaidReader = new JsonReaderPlaid(jsonTransactions);
     TransactionLogHost.getInstance().setLog(plaidReader.readTL());
     
-    return finalTransactions;
+    
+
+
+    return new TransactionsResponse(latestTransactions);
   }
 
   private class CompareTransactionDate implements Comparator<Transaction> {
