@@ -63,6 +63,7 @@ public class QuickstartApplication extends Application<QuickstartConfiguration> 
 
   public static void main(final String[] args) throws Exception {
     new QuickstartApplication().run(args);
+    
   }
 
   @Override
@@ -151,6 +152,7 @@ public class QuickstartApplication extends Application<QuickstartConfiguration> 
     environment.jersey().register(new TransferCreateResource(plaidClient));
     environment.jersey().register(new UserTokenResource(plaidClient, plaidProducts));
     environment.jersey().register(new CraResource(plaidClient));
+    
   }
 
   protected PlaidApi client() {

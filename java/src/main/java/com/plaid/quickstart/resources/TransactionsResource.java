@@ -78,8 +78,8 @@ public class TransactionsResource {
     List<Transaction> latestTransactions = added;//.subList(Math.max(added.size() - 8, 0), added.size());
 
 
-    PlaidReader plaidReader = new PlaidReader(latestTransactions);
-    TransactionLogHost.getInstance().setLog(plaidReader.parseTransactionLog());
+    //PlaidReader plaidReader = new PlaidReader(latestTransactions);
+    //TransactionLogHost.getInstance().setLog(plaidReader.parseTransactionLog());
 
     return new TransactionsResponse(latestTransactions);
   }

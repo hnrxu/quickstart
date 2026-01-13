@@ -22,6 +22,7 @@ const Transactions = () => {
 
         const transactionData = await response.json();
         setTransactions(transactionData.latest_transactions);
+        
     };
 
     fetchTransactions();
