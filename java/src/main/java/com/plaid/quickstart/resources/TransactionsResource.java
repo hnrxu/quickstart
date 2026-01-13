@@ -41,6 +41,8 @@ public TransactionsResponse getTransactions() throws IOException, InterruptedExc
   int maxAttempts = 6;      // don’t hang forever
   int attempt = 0;
 
+  List<Transaction> finalTransactions = new ArrayList<>();
+
   while (attempt < maxAttempts) {
     String cursor = null;   // fresh full sync each attempt
 
@@ -74,11 +76,12 @@ public TransactionsResponse getTransactions() throws IOException, InterruptedExc
 
     // Not enough yet — wait briefly and try again
     attempt++;
+    finalTransactions = added;
     Thread.sleep(1000);
   }
 
   // If still not enough, return whatever we have on the final attempt
-  return new TransactionsResponse(new ArrayList<>());
+  return new TransactionsResponse(finalTransactions);
 }
 
 
