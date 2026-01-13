@@ -23,6 +23,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.WebApplicationException;
+import java.util.Map;
+
 import retrofit2.Response;
 
 @Path("/transactions")
@@ -36,8 +40,8 @@ public class TransactionsResource {
   }
 
   @GET
-  public TransactionsResponse getTransactions() throws IOException, InterruptedException {
-    // Set cursor to empty to receive all historical updates
+    public TransactionsResponse getTransactions(@HeaderParam("X-Access-Token") String token)
+        throws IOException, InterruptedException {
     String cursor = null;
 
     // New transaction updates since "cursor"
@@ -47,9 +51,18 @@ public class TransactionsResource {
     boolean hasMore = true;
     // Iterate through each page of new transaction updates for item
     while (hasMore) {
-      TransactionsSyncRequest request = new TransactionsSyncRequest()
-        .accessToken(QuickstartApplication.accessToken)
+      String at = (token != null && !token.isBlank()) ? token : QuickstartApplication.accessToken;
+
+        if (at == null || at.isBlank()) {
+        throw new WebApplicationException(
+            javax.ws.rs.core.Response.status(400).entity(Map.of("error", "No access token available")).build()
+        );
+        }
+
+        TransactionsSyncRequest request = new TransactionsSyncRequest()
+        .accessToken(at)
         .cursor(cursor);
+
 
       Response<TransactionsSyncResponse> response = plaidClient.transactionsSync(request).execute();
       TransactionsSyncResponse responseBody = response.body();
@@ -78,8 +91,8 @@ public class TransactionsResource {
     List<Transaction> latestTransactions = added;//.subList(Math.max(added.size() - 8, 0), added.size());
 
 
-    //PlaidReader plaidReader = new PlaidReader(latestTransactions);
-    //TransactionLogHost.getInstance().setLog(plaidReader.parseTransactionLog());
+    PlaidReader plaidReader = new PlaidReader(latestTransactions);
+    TransactionLogHost.getInstance().setLog(plaidReader.parseTransactionLog());
 
     return new TransactionsResponse(latestTransactions);
   }

@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import styles from "./index.module.scss";
+import Context from "../../Context";
+import { useContext } from "react";
+
 
 const Transactions = () => {
     
@@ -12,12 +15,20 @@ const Transactions = () => {
     };
 
     const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const { accessToken } = useContext(Context);
+
 
     useEffect(() => {
     const fetchTransactions = async () => {
         const response = await fetch(
         "https://quickstart-lwsu.onrender.com/api/transactions",
-        { method: "GET" }
+        {
+            method: "GET",
+            headers: {
+            "X-Access-Token": accessToken ?? "",
+            },
+            cache: "no-store",
+        }
         );
 
         const transactionData = await response.json();

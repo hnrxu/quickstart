@@ -9,54 +9,57 @@ const Link = () => {
     useContext(Context);
 
   const onSuccess = React.useCallback(
-    (public_token: string) => {
-      // If the access_token is needed, send public_token to server
-      const exchangePublicTokenForAccessToken = async () => {
-        // check this
-        const response = await fetch("https://quickstart-lwsu.onrender.com/api/set_access_token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-          },
-          body: `public_token=${public_token}`,
-        });
+    async (public_token: string) => {
+        const exchangePublicTokenForAccessToken = async () => {
+        const response = await fetch(
+            "https://quickstart-lwsu.onrender.com/api/set_access_token",
+            {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+            body: `public_token=${public_token}`,
+            }
+        );
+
         if (!response.ok) {
-          dispatch({
+            dispatch({
             type: "SET_STATE",
             state: {
-              itemId: `no item_id retrieved`,
-              accessToken: `no access_token retrieved`,
-              isItemAccess: false,
+                itemId: `no item_id retrieved`,
+                accessToken: `no access_token retrieved`,
+                isItemAccess: false,
             },
-          });
-          return;
+            });
+            throw new Error("set_access_token failed");
         }
+
         const data = await response.json();
         dispatch({
-          type: "SET_STATE",
-          state: {
+            type: "SET_STATE",
+            state: {
             itemId: data.item_id,
             accessToken: data.access_token,
             isItemAccess: true,
-          },
+            },
         });
-      };
+        return data.access_token as string;
+    };
 
-      // 'payment_initiation' products do not require the public_token to be exchanged for an access_token.
-      if (isPaymentInitiation) {
-        dispatch({ type: "SET_STATE", state: { isItemAccess: false } });
-      } else if (isCraProductsExclusively) {
-        // When only CRA products are enabled, only user_token is needed. access_token/public_token exchange is not needed.
-        dispatch({ type: "SET_STATE", state: { isItemAccess: false } });
-      } else {
-        exchangePublicTokenForAccessToken();
-      }
+    if (isPaymentInitiation) {
+      dispatch({ type: "SET_STATE", state: { isItemAccess: false } });
+    } else if (isCraProductsExclusively) {
+      dispatch({ type: "SET_STATE", state: { isItemAccess: false } });
+    } else {
+      await exchangePublicTokenForAccessToken();
+    }
 
-      dispatch({ type: "SET_STATE", state: { linkSuccess: true } });
-      window.history.pushState("", "", "/");
-    },
-    [dispatch, isPaymentInitiation, isCraProductsExclusively]
-  );
+    dispatch({ type: "SET_STATE", state: { linkSuccess: true } });
+    window.history.pushState("", "", "/");
+  },
+  [dispatch, isPaymentInitiation, isCraProductsExclusively]
+);
+
 
   let isOauth = false;
   const config: Parameters<typeof usePlaidLink>[0] = {
