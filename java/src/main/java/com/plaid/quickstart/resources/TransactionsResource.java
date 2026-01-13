@@ -16,6 +16,7 @@ import com.plaid.quickstart.QuickstartApplication;
 import com.plaid.quickstart.TransactionLogHost;
 import com.plaid.quickstart.model.TransactionLog;
 import com.plaid.quickstart.persistence.JsonReaderPlaid;
+import com.plaid.quickstart.persistence.PlaidReader;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -76,17 +77,10 @@ public class TransactionsResource {
     added.sort(new TransactionsResource.CompareTransactionDate());
     List<Transaction> latestTransactions = added;//.subList(Math.max(added.size() - 8, 0), added.size());
 
-    
-    TransactionsResponse finalTransactions = new TransactionsResponse(latestTransactions);
 
-    try {
-    ObjectMapper mapper = new ObjectMapper();
-    String jsonTransactions = mapper.writeValueAsString(finalTransactions);
-    JsonReaderPlaid plaidReader = new JsonReaderPlaid(jsonTransactions);
-    TransactionLogHost.getInstance().setLog(plaidReader.readTL());
-    } catch (Exception e) {
-    e.printStackTrace(); // or proper logger
-    }
+    PlaidReader plaidReader = new PlaidReader(latestTransactions);
+    TransactionLogHost.getInstance().setLog(plaidReader.parseTransactionLog());
+   
 
     
 
