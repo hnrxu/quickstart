@@ -175,7 +175,7 @@ const Header = () => {
 
               
               {(isItemAccess || userToken || userId) && (
-                <p className={styles.requests}>
+                <div className={styles.requests}>
                     <Dashboard />
                 {/* CHECK THIS*/}
                   {/* Now that you have {accessToken && "an access_token"}
@@ -184,7 +184,7 @@ const Header = () => {
                   {userToken && userId && " and "}
                   {userId && "a user_id"}, you can make all of the
                   following requests: */}
-                </p>
+                </div>
               )}
             </>
           )}

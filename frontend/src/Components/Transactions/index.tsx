@@ -22,6 +22,11 @@ const Transactions = () => {
 
         const transactionData = await response.json();
         setTransactions(transactionData.latest_transactions);
+       
+console.log("latest_transactions length:", transactionData.latest_transactions?.length);
+console.log("total_transactions:", transactionData.total_transactions);
+console.log("has_more:", transactionData.has_more);
+
     };
 
     fetchTransactions();
@@ -50,6 +55,7 @@ const Transactions = () => {
     }
     
     return <div>
+    {transactions.length}
         {transactions.map((t, index) => (<div 
         key={t.transaction_id}>
             {showDate(index, t.date) && <div>{formatDate(t.date)}</div>}

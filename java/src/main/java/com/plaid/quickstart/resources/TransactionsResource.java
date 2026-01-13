@@ -30,78 +30,60 @@ import retrofit2.Response;
 public class TransactionsResource {
   private final PlaidApi plaidClient;
 
+  // In-memory store (DEV ONLY). Key by itemId if you have it.
+  private static String cursor = null;
+  private static final java.util.Map<String, Transaction> store = new java.util.HashMap<>();
 
   public TransactionsResource(PlaidApi plaidClient) {
     this.plaidClient = plaidClient;
   }
 
   @GET
-  public TransactionsResponse getTransactions() throws IOException, InterruptedException {
-    // Set cursor to empty to receive all historical updates
-    String cursor = null;
-
-    // New transaction updates since "cursor"
-    List<Transaction> added = new ArrayList<Transaction>();
-    List<Transaction> modified = new ArrayList<Transaction>();
-    List<RemovedTransaction> removed = new ArrayList<RemovedTransaction>();
+  public TransactionsResponse getTransactions() throws IOException {
     boolean hasMore = true;
-    // Iterate through each page of new transaction updates for item
+
     while (hasMore) {
       TransactionsSyncRequest request = new TransactionsSyncRequest()
-        .accessToken(QuickstartApplication.accessToken)
-        .cursor(cursor);
+          .accessToken(QuickstartApplication.accessToken)
+          .cursor(cursor);
 
       Response<TransactionsSyncResponse> response = plaidClient.transactionsSync(request).execute();
-      TransactionsSyncResponse responseBody = response.body();
+      TransactionsSyncResponse body = response.body();
+      if (body == null) throw new IOException("Null Plaid response body");
 
-      cursor = responseBody.getNextCursor();
-
-      // If no transactions are available yet, wait and poll the endpoint.
-      // Normally, we would listen for a webhook, but the Quickstart doesn't
-      // support webhooks. For a webhook example, see
-      // https://github.com/plaid/tutorial-resources or
-      // https://github.com/plaid/pattern
-
-      if (cursor.equals("")) {
-          Thread.sleep(2000); 
-          continue; 
+      // apply added
+      for (Transaction t : body.getAdded()) {
+        store.put(t.getTransactionId(), t);
       }
-      // Add this page of results
-      added.addAll(responseBody.getAdded());
-      modified.addAll(responseBody.getModified());
-      removed.addAll(responseBody.getRemoved());
-      hasMore = responseBody.getHasMore();
+
+      // apply modified
+      for (Transaction t : body.getModified()) {
+        store.put(t.getTransactionId(), t);
+      }
+
+      // apply removed
+      for (RemovedTransaction rt : body.getRemoved()) {
+        store.remove(rt.getTransactionId());
+      }
+
+      cursor = body.getNextCursor();
+      hasMore = Boolean.TRUE.equals(body.getHasMore());
     }
 
-    // Return all most recent transactions
-    added.sort(new TransactionsResource.CompareTransactionDate());
-    List<Transaction> latestTransactions = added;//.subList(Math.max(added.size() - 8, 0), added.size());
+    // return FULL stable list
+    List<Transaction> all = new ArrayList<>(store.values());
+    all.sort((a, b) -> b.getDate().compareTo(a.getDate()));
 
-
-    PlaidReader plaidReader = new PlaidReader(latestTransactions);
-    TransactionLogHost.getInstance().setLog(plaidReader.parseTransactionLog());
-   
-
-    
-
-
-    return new TransactionsResponse(latestTransactions);
+    return new TransactionsResponse(all);
   }
 
-  private class CompareTransactionDate implements Comparator<Transaction> {
-    @Override
-    public int compare(Transaction o1, Transaction o2) {
-        return o2.getDate().compareTo(o1.getDate());
-    }
-  }
-
-  
   private static class TransactionsResponse {
     @JsonProperty
     private final List<Transaction> latest_transactions;
-  
+
     public TransactionsResponse(List<Transaction> latestTransactions) {
       this.latest_transactions = latestTransactions;
     }
   }
 }
+
