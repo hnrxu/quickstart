@@ -6,13 +6,16 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plaid.client.request.PlaidApi;
 import com.plaid.client.model.TransactionsSyncRequest;
 import com.plaid.client.model.TransactionsSyncResponse;
 import com.plaid.client.model.Transaction;
 import com.plaid.client.model.RemovedTransaction;
 import com.plaid.quickstart.QuickstartApplication;
+import com.plaid.quickstart.TransactionLogHost;
+import com.plaid.quickstart.model.TransactionLog;
+import com.plaid.quickstart.persistence.JsonReaderPlaid;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -69,10 +72,19 @@ public class TransactionsResource {
       hasMore = responseBody.getHasMore();
     }
 
-    // Return the 8 most recent transactions
+    // Return all most recent transactions
     added.sort(new TransactionsResource.CompareTransactionDate());
     List<Transaction> latestTransactions = added;//.subList(Math.max(added.size() - 8, 0), added.size());
-    return new TransactionsResponse(latestTransactions);
+
+    
+    TransactionsResponse finalTransactions = new TransactionsResponse(latestTransactions);
+
+    ObjectMapper mapper = new ObjectMapper();
+    String jsonTransactions = mapper.writeValueAsString(finalTransactions);
+    JsonReaderPlaid plaidReader = new JsonReaderPlaid(jsonTransactions);
+    TransactionLogHost.getInstance().setLog(plaidReader.readTL());
+    
+    return finalTransactions;
   }
 
   private class CompareTransactionDate implements Comparator<Transaction> {
@@ -81,6 +93,7 @@ public class TransactionsResource {
         return o2.getDate().compareTo(o1.getDate());
     }
   }
+
   
   private static class TransactionsResponse {
     @JsonProperty

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import styles from "./index.module.scss";
 
 const Transactions = () => {
     
@@ -7,7 +8,7 @@ const Transactions = () => {
         name: string;
         amount: number;
         merchant_name?: string | null;
-        date: string;
+        date: dateArray;
     };
 
     const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -28,7 +29,7 @@ const Transactions = () => {
 
 
     // logic of whether or not to show the date header before a transaction
-    const showDate = (index: number, date: string) => {   
+    const showDate = (index: number, date: dateArray) => {   
         if (index ===0) {
             return true;
         }
@@ -37,20 +38,25 @@ const Transactions = () => {
         } return true;
     }
 
-    const formatDate = (date: string) => {
+    type dateArray = [number, number, number]
+    const formatDate = (date: dateArray) => {
+        const [y, m ,d] = date;
         const formattedDate = new Intl.DateTimeFormat('en-US', {
             year: 'numeric',
             month: 'long',
             day: 'numeric'   
-        }).format(new Date(`${date.slice(0,4)}-${date.slice(4,6)}-${date.slice(6,8)}`));
+        }).format(new Date(y, m-1, d));
         return formattedDate;
     }
     
     return <div>
-        {transactions.map((t, index) => (<h1 
+        {transactions.map((t, index) => (<div 
         key={t.transaction_id}>
             {showDate(index, t.date) && <div>{formatDate(t.date)}</div>}
-            {t.name} {t.amount}</h1>))}
+                <div className="transaction-info">
+                    {t.name} {t.amount} 
+                </div>
+            </div>))}
     </div>
 }
       
