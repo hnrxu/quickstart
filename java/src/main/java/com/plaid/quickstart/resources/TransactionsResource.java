@@ -79,11 +79,15 @@ public class TransactionsResource {
     
     TransactionsResponse finalTransactions = new TransactionsResponse(latestTransactions);
 
+    try {
     ObjectMapper mapper = new ObjectMapper();
     String jsonTransactions = mapper.writeValueAsString(finalTransactions);
     JsonReaderPlaid plaidReader = new JsonReaderPlaid(jsonTransactions);
     TransactionLogHost.getInstance().setLog(plaidReader.readTL());
-    
+    } catch (Exception e) {
+    e.printStackTrace(); // or proper logger
+    }
+
     
 
 
