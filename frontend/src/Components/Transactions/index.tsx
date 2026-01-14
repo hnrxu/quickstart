@@ -12,7 +12,21 @@ const Transactions = () => {
         date: dateArray;
     };
 
+    type Summary = {
+        most_frequent_category: {
+            name: string;
+            total_spent: number;
+            num_purchases: number;
+        };
+        most_spent_category: {
+            name: string;
+            total_spent: number;
+            num_purchases: number;
+        };
+    };
+
     const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [summaries, setSummaries] = useState<Summary|null>(null);
 
     useEffect(() => {
     const fetchTransactions = async () => {
@@ -28,6 +42,19 @@ const Transactions = () => {
     };
 
     fetchTransactions();
+
+    const fetchSummaryData = async () => {
+        const response = await fetch("https://quickstart-lwsu.onrender.com/api/summarydata",
+            { method: "GET"});
+        if (!response.ok) {
+            console.error("summarydata failed", response.status);
+            return;
+        }
+        const summaryData = await response.json();
+        setSummaries(summaryData);
+    }
+
+    fetchSummaryData();
     }, []);
 
 
@@ -51,17 +78,21 @@ const Transactions = () => {
         }).format(new Date(y, m-1, d));
         return formattedDate;
     }
-    
+
+    {if(transactions.length === 0) {return <div> loading...</div>}}
+
     return <div>
-    {transactions.length}
+        <div> 
+            Category purchases most frequently made at: {summaries?.most_frequent_category.name} <br />
+            Category most spent at: {summaries?.most_spent_category.name}
+        </div>  
         {transactions.map((t, index) => (<div 
         key={t.transaction_id}>
             {showDate(index, t.date) && <div>{formatDate(t.date)}</div>}
-                <div className="transaction-info">
+                <p className="transaction-info">
                     {t.name} {t.amount} 
-                </div>
+                </p>
             </div>))}
-            <Dashboard />
             hdllohdllodhllooooo
     </div>
 }

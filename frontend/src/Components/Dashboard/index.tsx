@@ -21,8 +21,11 @@ const Dashboard = () => {
         const fetchSummaryData = async () => {
             const response = await fetch("https://quickstart-lwsu.onrender.com/api/summarydata",
                 { method: "GET"});
+            if (!response.ok) {
+                console.error("summarydata failed", response.status);
+                return;
+            }
             const summaryData = await response.json();
-            console.log(summaryData);
             setSummaries(summaryData);
         }
 
@@ -30,10 +33,12 @@ const Dashboard = () => {
     }, []) /// only call once upon render for now
 
     {if(!summaries) {return <div> loading...</div>}}
-    
+
     return <div>Viewing Transactions
-        {summaries?.most_frequent_category.name}
-        {summaries?.most_spent_category.name}
+        <div> 
+            Category most purchases made at: {summaries?.most_frequent_category.name} <br />
+            Category most spent at: {summaries?.most_spent_category.name}
+        </div>  
     </div>
 }
 
