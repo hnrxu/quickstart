@@ -148,8 +148,8 @@ const App = () => {
           <>
           {!isPaymentInitiation && itemId && 
           <div>
-            
             <Transactions />
+            
           </div>}
             
             {/* <Products />

@@ -15,19 +15,21 @@ const Dashboard = () => {
         };
     };
 
-    const [summaries, setSummaries] = useState<Summary>();
+    const [summaries, setSummaries] = useState<Summary|null>(null);
 
     useEffect(() => {
         const fetchSummaryData = async () => {
             const response = await fetch("https://quickstart-lwsu.onrender.com/api/summarydata",
                 { method: "GET"});
             const summaryData = await response.json();
+            console.log(summaryData);
             setSummaries(summaryData);
         }
 
         fetchSummaryData();
     }, []) /// only call once upon render for now
 
+    {if(!summaries) {return <div> loading...</div>}}
     
     return <div>Viewing Transactions
         {summaries?.most_frequent_category.name}

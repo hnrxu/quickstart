@@ -20,6 +20,7 @@ import com.plaid.quickstart.resources.PaymentInitiationResource;
 import com.plaid.quickstart.resources.PublicTokenResource;
 import com.plaid.quickstart.resources.SignalResource;
 import com.plaid.quickstart.resources.StatementsResource;
+import com.plaid.quickstart.resources.SummaryDataResource;
 import com.plaid.quickstart.resources.TransactionsResource;
 import com.plaid.quickstart.resources.TransferAuthorizeResource;
 import com.plaid.quickstart.resources.TransferCreateResource;
@@ -151,6 +152,7 @@ public class QuickstartApplication extends Application<QuickstartConfiguration> 
     environment.jersey().register(new TransferCreateResource(plaidClient));
     environment.jersey().register(new UserTokenResource(plaidClient, plaidProducts));
     environment.jersey().register(new CraResource(plaidClient));
+    environment.jersey().register(new SummaryDataResource());
   }
 
   protected PlaidApi client() {

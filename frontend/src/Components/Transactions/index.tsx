@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import styles from "./index.module.scss";
+import Dashboard from "../Dashboard";
 
 const Transactions = () => {
     
@@ -60,6 +61,7 @@ const Transactions = () => {
                     {t.name} {t.amount} 
                 </div>
             </div>))}
+            <Dashboard />
             hdllohdllodhllooooo
     </div>
 }

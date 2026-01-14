@@ -176,7 +176,7 @@ const Header = () => {
               
               {(isItemAccess || userToken || userId) && (
                 <div className={styles.requests}>
-                    <Dashboard />
+                   
                 {/* CHECK THIS*/}
                   {/* Now that you have {accessToken && "an access_token"}
                   {accessToken && (userToken || userId) && " and "}
