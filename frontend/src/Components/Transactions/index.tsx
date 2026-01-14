@@ -23,9 +23,6 @@ const Transactions = () => {
         const transactionData = await response.json();
         setTransactions(transactionData.latest_transactions);
        
-console.log("latest_transactions length:", transactionData.latest_transactions?.length);
-console.log("total_transactions:", transactionData.total_transactions);
-console.log("has_more:", transactionData.has_more);
 
     };
 

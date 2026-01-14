@@ -17,6 +17,10 @@ public class TransactionLogHost {
         return instance;
     }
 
+    public TransactionLog getLog() {
+        return log;
+    }
+
     public void setLog(TransactionLog log) {
         this.log = log;
     }
