@@ -89,7 +89,7 @@ const Transactions = () => {
         {transactions.map((t, index) => (<div 
         key={t.transaction_id}>
             {showDate(index, t.date) && <div>{formatDate(t.date)}</div>}
-                <p className="transaction-info">
+                <p className={styles.transactionInfo}>
                     {t.name} {t.amount} 
                 </p>
             </div>))}
