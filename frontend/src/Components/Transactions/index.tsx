@@ -1,61 +1,65 @@
 import { useCallback, useEffect, useState } from "react";
 import styles from "./index.module.scss";
-import Dashboard from "../Dashboard";
+import Dashboard, { Transaction } from "../Dashboard";
 
-const Transactions = () => {
+type TransactionsProps = {
+  transactions: Transaction[];
+};
+
+const Transactions = ({transactions}: TransactionsProps) => {
     
-    type Transaction = {
-        transaction_id: string;
-        name: string;
-        amount: number;
-        merchant_name?: string | null;
-        date: dateArray;
-    };
+    // type Transaction = {
+    //     transaction_id: string;
+    //     name: string;
+    //     amount: number;
+    //     merchant_name?: string | null;
+    //     date: dateArray;
+    // };
 
-    type Summary = {
-        most_frequent_category: {
-            name: string;
-            total_spent: number;
-            num_purchases: number;
-        };
-        most_spent_category: {
-            name: string;
-            total_spent: number;
-            num_purchases: number;
-        };
-    };
+    // type Summary = {
+    //     most_frequent_category: {
+    //         name: string;
+    //         total_spent: number;
+    //         num_purchases: number;
+    //     };
+    //     most_spent_category: {
+    //         name: string;
+    //         total_spent: number;
+    //         num_purchases: number;
+    //     };
+    // };
 
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
-    const [summaries, setSummaries] = useState<Summary|null>(null);
+    // const [transactions, setTransactions] = useState<Transaction[]>([]);
+    // const [summaries, setSummaries] = useState<Summary|null>(null);
 
-    useEffect(() => {
-    const fetchTransactions = async () => {
-        const response = await fetch(
-        "https://quickstart-lwsu.onrender.com/api/transactions",
-        { method: "GET" }
-        );
+    // useEffect(() => {
+    // const fetchTransactions = async () => {
+    //     const response = await fetch(
+    //     "https://quickstart-lwsu.onrender.com/api/transactions",
+    //     { method: "GET" }
+    //     );
 
-        const transactionData = await response.json();
-        setTransactions(transactionData.latest_transactions);
+    //     const transactionData = await response.json();
+    //     setTransactions(transactionData.latest_transactions);
        
 
-    };
+    // };
 
-    fetchTransactions();
+    // fetchTransactions();
 
-    const fetchSummaryData = async () => {
-        const response = await fetch("https://quickstart-lwsu.onrender.com/api/summarydata",
-            { method: "GET"});
-        if (!response.ok) {
-            console.error("summarydata failed", response.status);
-            return;
-        }
-        const summaryData = await response.json();
-        setSummaries(summaryData);
-    }
+    // const fetchSummaryData = async () => {
+    //     const response = await fetch("https://quickstart-lwsu.onrender.com/api/summarydata",
+    //         { method: "GET"});
+    //     if (!response.ok) {
+    //         console.error("summarydata failed", response.status);
+    //         return;
+    //     }
+    //     const summaryData = await response.json();
+    //     setSummaries(summaryData);
+    // }
 
-    fetchSummaryData();
-    }, []);
+    // fetchSummaryData();
+    // }, []);
 
 
     // logic of whether or not to show the date header before a transaction
@@ -81,11 +85,8 @@ const Transactions = () => {
 
     {if(transactions.length === 0) {return <div> loading...</div>}}
 
-    return <div>
-        <div> 
-            Category purchases most frequently made at: {summaries?.most_frequent_category.name} <br />
-            Category most spent at: {summaries?.most_spent_category.name}
-        </div>  
+    return <div> 
+        Viewing Transactions 
         {transactions.map((t, index) => (<div 
         key={t.transaction_id}>
             {showDate(index, t.date) && <div>{formatDate(t.date)}</div>}
