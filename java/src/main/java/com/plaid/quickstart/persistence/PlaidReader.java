@@ -105,9 +105,13 @@ public class PlaidReader {
             if (storeName == null|| storeName.equals("")) {
                 storeName = "N/A";
             }
+            String paymentChannel = plaidTransaction.getPaymentChannel().getValue();
             String categoryName = plaidTransaction.getPersonalFinanceCategory().getPrimary();
             Category category = new Category(categoryName);
             Store store = new Store(storeName, category);
+            if(paymentChannel != null) {
+                store.updateStore(null,null,paymentChannel,null,null); 
+            }
             
 
             // makes and updates expense

@@ -22,6 +22,13 @@ export type Category = {
     budget?: number | null;
 }
 
+export type Store = {
+    name: string;
+    num_purchases: number;
+    total_spent: number;
+    budget?: number | null;
+}
+
 const Dashboard = () => {
 
     const [transactions, setTransactions] = useState<Transaction[]>([]);
