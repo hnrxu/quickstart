@@ -14,23 +14,19 @@ export type Transaction = {
     }
 export type dateArray = [number, number, number];
 
-export type Summary = {
-        most_frequent_category: {
-            name: string;
-            total_spent: number;
-            num_purchases: number;
-        };
-        most_spent_category: {
-            name: string;
-            total_spent: number;
-            num_purchases: number;
-        };
-    }
+
+export type Category = {
+    name: string;
+    num_purchases: number;
+    total_spent: number;
+    budget?: number | null;
+}
 
 const Dashboard = () => {
 
     const [transactions, setTransactions] = useState<Transaction[]>([]);
-    const [summaries, setSummaries] = useState<Summary|null>(null);
+    const [freqCategories, setFreqCategories] = useState<Category[]>([]); 
+    const [spentCategories, setSpentCategories] = useState<Category[]>([]); 
 
     
 
@@ -57,7 +53,9 @@ const Dashboard = () => {
             return;
         }
         const summaryData = await response.json();
-        setSummaries(summaryData);
+        setFreqCategories(summaryData.most_frequent_categories);
+        console.log("LOOK HERE", summaryData.most_frequent_categories);
+        setSpentCategories(summaryData.most_spent_categories);
     }
 
     const loadData = async () => { // need this await gguards to make sure transactions finished fetching before calling summary
@@ -94,7 +92,8 @@ const Dashboard = () => {
         });
 
         setTransactions([]);
-        setSummaries(null);
+        setFreqCategories([]);
+        setSpentCategories([]);
 
     }
 
@@ -111,7 +110,8 @@ const Dashboard = () => {
                     <Transactions transactions={transactions}/>
                 </div>
                 <div> 
-                    <SummaryWidget summary={summaries} />
+                    <SummaryWidget freqCategories={freqCategories}
+                                spentCategories={spentCategories} />
                 </div>
             </div>
            

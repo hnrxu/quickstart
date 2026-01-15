@@ -9,8 +9,8 @@
 .gridContainer {
     display: grid;
     flex-grow: 1;
-    grid-template-columns: 2fr 1fr;
-    background-color: var(--main-color);;
+    grid-template-columns: 1.7fr 1fr;
+    background-color: var(--main-color);
     width:100%;
 }
 
@@ -18,3 +18,4 @@
     height: 300px;
     flex-grow: 1;
 }
+

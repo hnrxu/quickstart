@@ -1,11 +1,17 @@
 :root {
     --main-h: 273;
     --main-s: 58%;
-    --main-l: 96%;
+    --main-l: 60%;
 
     --main-color: hsl(var(--main-h) var(--main-s) var(--main-l));
     --border-color: hsl(var(--main-h) var(--main-s) 90%);
-    --shadow-color: hsl(var(--main-h) var(--main-s) 94%);
+    --shadow-color: hsl(var(--main-h) var(--main-s) calc(var(--main-l) - 6%));
+
+    --main-color-bar-1: hsl(var(--main-h) var(--main-s) 30%);
+    --main-color-bar-2: hsl(var(--main-h) var(--main-s) 40%);
+    --main-color-bar-3: hsl(var(--main-h) var(--main-s) 50%);
+    --main-color-bar-4: hsl(var(--main-h) var(--main-s) 60%);
+    --main-color-bar-5: hsl(var(--main-h) var(--main-s) 70%);
 }
 
 // get rid of automatic white border
@@ -13,3 +19,4 @@ html, body {
   margin: 0;
   padding: 0;
 }
+
