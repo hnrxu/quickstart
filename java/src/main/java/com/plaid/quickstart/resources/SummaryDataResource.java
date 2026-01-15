@@ -26,49 +26,26 @@ public class SummaryDataResource {
     @GET
     public SummaryDataResponse getData() {
         log = TransactionLogHost.getInstance().getLog();
-        CategoryResponse r1 = new CategoryResponse(log.getMostFrequentCategory());
-        CategoryResponse r2 = new CategoryResponse(log.getMostSpentCategory());
+        List<Category> r1 = log.getSortedFreqCategories();
+        List<Category> r2 = log.getSortedAmountCategories();
         return new SummaryDataResponse(r1, r2);
 
     }
     private static class SummaryDataResponse {
-        @JsonProperty("most_frequent_category")
-        private final CategoryResponse mostFrequentCategory;
+        @JsonProperty("most_frequent_categories")
+        private final List<Category> sortedCategoriesFreq;
 
-        @JsonProperty("most_spent_category")
-        private final CategoryResponse mostSpentCategory;
 
-        public SummaryDataResponse(CategoryResponse mostFrequentCategory, CategoryResponse mostSpentCategory) {
-            this.mostFrequentCategory = mostFrequentCategory;
-            this.mostSpentCategory = mostSpentCategory;
+        @JsonProperty("most_spent_categories")
+        private final List<Category> sortedCategoriesAmount;
+
+
+        public SummaryDataResponse(List<Category> sortedCategoriesFreq, List<Category> sortedCategoriesAmount) {
+            this.sortedCategoriesFreq = sortedCategoriesFreq;
+            this.sortedCategoriesAmount = sortedCategoriesAmount;
         }
     }
 
-    private static class CategoryListResponse {
-        @JsonProperty("sorted_categories")
-        private final List<Category> sortedCategories;
-
-        public CategoryListResponse(List<Category> categories) {
-            this.sortedCategories = categories;
-        }
-    }
-
-    private static class CategoryResponse {
-        @JsonProperty
-        private final String name;
-
-        @JsonProperty("total_spent")
-        private final Double totalSpent;
-
-        @JsonProperty("num_purchases")
-        private final int numPurchases;
-
-        public CategoryResponse(Category category) {
-            this.name = category.getName();
-            this.totalSpent = category.getTotalSpent();
-            this.numPurchases = category.getNumPurchases();
-        }
-    }
 
 
     

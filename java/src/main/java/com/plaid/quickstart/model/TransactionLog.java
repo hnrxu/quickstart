@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import com.plaid.quickstart.persistence.Writable;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Represents a log of all financial transactions made by the user.
@@ -138,6 +139,16 @@ public class TransactionLog implements Writable {
     // EFFECTS: returns category most money spent at, if multiple, return last
     public Category getMostSpentCategory() { 
         return categoryList.getMostSpentCategory();
+    }
+
+    // EFFECTS: returns categories in sotrted list by num purchases
+    public List<Category> getSortedFreqCategories() {
+       return categoryList.getSortedFreqCategories();
+    }
+
+    // EFFECTS: returns categories in sotrted list by total spent
+    public List<Category> getSortedAmountCategories() {
+       return categoryList.getSortedAmountCategories();
     }
 
 

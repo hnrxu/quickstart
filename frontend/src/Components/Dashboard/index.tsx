@@ -101,7 +101,7 @@ const Dashboard = () => {
 
     return <div>
         <div className={styles.dashboardLayout}> 
-            <button type="button" onClick={() => removeItem()}></button>
+            <button type="button" onClick={() => removeItem()}>disconnect from bank </button> 
             <div className={styles.balance}>
                 hello
 
