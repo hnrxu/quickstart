@@ -58,6 +58,7 @@ const SummaryWidget = ({freqCategories, spentCategories, freqStores, spentStores
                             interval={0} 
                             style={{
                                 fontFamily: "Inter",
+                                fontSize: 25
                                 //fontWeight: 250
                                 }} 
                             stroke="black" 
@@ -201,7 +202,7 @@ const SummaryWidget = ({freqCategories, spentCategories, freqStores, spentStores
                             ></XAxis>
                             <YAxis stroke="black" tick={{ fill: 'black' }} />
                             
-                            <Bar dataKey="num_purchases" fill="#b684d8ff" >
+                            <Bar dataKey="total_spent" fill="#b684d8ff" >
                                 {
                                     freqCategories.map((bar, index) => (
                                         <Cell key={index} fill={barColors[index % barColors.length]} />
