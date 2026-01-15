@@ -8,59 +8,6 @@ type TransactionsProps = {
 
 const Transactions = ({transactions}: TransactionsProps) => {
     
-    // type Transaction = {
-    //     transaction_id: string;
-    //     name: string;
-    //     amount: number;
-    //     merchant_name?: string | null;
-    //     date: dateArray;
-    // };
-
-    // type Summary = {
-    //     most_frequent_category: {
-    //         name: string;
-    //         total_spent: number;
-    //         num_purchases: number;
-    //     };
-    //     most_spent_category: {
-    //         name: string;
-    //         total_spent: number;
-    //         num_purchases: number;
-    //     };
-    // };
-
-    // const [transactions, setTransactions] = useState<Transaction[]>([]);
-    // const [summaries, setSummaries] = useState<Summary|null>(null);
-
-    // useEffect(() => {
-    // const fetchTransactions = async () => {
-    //     const response = await fetch(
-    //     "https://quickstart-lwsu.onrender.com/api/transactions",
-    //     { method: "GET" }
-    //     );
-
-    //     const transactionData = await response.json();
-    //     setTransactions(transactionData.latest_transactions);
-       
-
-    // };
-
-    // fetchTransactions();
-
-    // const fetchSummaryData = async () => {
-    //     const response = await fetch("https://quickstart-lwsu.onrender.com/api/summarydata",
-    //         { method: "GET"});
-    //     if (!response.ok) {
-    //         console.error("summarydata failed", response.status);
-    //         return;
-    //     }
-    //     const summaryData = await response.json();
-    //     setSummaries(summaryData);
-    // }
-
-    // fetchSummaryData();
-    // }, []);
-
 
     // logic of whether or not to show the date header before a transaction
     const showDate = (index: number, date: dateArray) => {   
@@ -83,18 +30,33 @@ const Transactions = ({transactions}: TransactionsProps) => {
         return formattedDate;
     }
 
+    const formatAmount = (amount: number) => {
+        const stringAmount = String(amount);
+        let formattedAmount = "";
+        if (amount < 0) {
+            formattedAmount = `${stringAmount.substring(0,1)}$${stringAmount.substring(1)}`
+        } else {
+            formattedAmount = `$${stringAmount}`
+        }
+        return formattedAmount;
+    }
+
     {if(transactions.length === 0) {return <div> loading...</div>}}
 
     return <div> 
-        Viewing Transactions 
+        <div className={styles.title}><b>Transactions</b></div>
+        <div className={styles.transactionContainer}>
         {transactions.map((t, index) => (<div 
         key={t.transaction_id}>
-            {showDate(index, t.date) && <div>{formatDate(t.date)}</div>}
-                <p className={styles.transactionInfo}>
-                    {t.name} {t.amount} 
-                </p>
+                {showDate(index, t.date) && <div className={styles.dateContainer}>{formatDate(t.date)}</div>}
+            
+            <div className={styles.transactionInfo}>
+                
+                <div className={styles.name}>{t.name}</div> <div className={styles.amount}>{formatAmount(t.amount)} </div>
+                
+            </div>
             </div>))}
-            hdllohdllodhllooooo
+        </div>
     </div>
 }
       

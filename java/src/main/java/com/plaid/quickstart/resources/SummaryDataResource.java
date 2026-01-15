@@ -44,6 +44,15 @@ public class SummaryDataResource {
         }
     }
 
+    private static class CategoryListResponse {
+        @JsonProperty("sorted_categories")
+        private final List<Category> sortedCategories;
+
+        public CategoryListResponse(List<Category> categories) {
+            this.sortedCategories = categories;
+        }
+    }
+
     private static class CategoryResponse {
         @JsonProperty
         private final String name;
@@ -51,7 +60,7 @@ public class SummaryDataResource {
         @JsonProperty("total_spent")
         private final Double totalSpent;
 
-         @JsonProperty("num_purchases")
+        @JsonProperty("num_purchases")
         private final int numPurchases;
 
         public CategoryResponse(Category category) {

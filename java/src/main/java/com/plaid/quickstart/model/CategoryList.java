@@ -1,6 +1,7 @@
 package com.plaid.quickstart.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -94,6 +95,35 @@ public class CategoryList implements Writable {
         }
         return mostSpent;
     }
+
+    // EFFECTS: returns categories in sotrted list by num purchases
+    private class CompareCategoryPurchases implements Comparator<Category> {
+        @Override
+        public int compare(Category c1, Category c2) {
+            return Integer.compare(c2.getNumPurchases(),c1.getNumPurchases());
+        }
+    }
+    public List<Category> getSortedFreqCategories() {
+        List<Category> dummyList = new ArrayList<Category>(categoryList);
+        dummyList.sort(new CompareCategoryPurchases());
+        return dummyList;
+    }
+    
+
+    // EFFECTS: returns categories in sotrted list by total spent
+    private class CompareCategoryAmount implements Comparator<Category> {
+        @Override
+        public int compare(Category c1, Category c2) {
+            return Double.compare(c2.getTotalSpent(),c1.getTotalSpent());
+        }
+    }
+    public List<Category> getSortedAmountCategories() {
+        List<Category> dummyList = new ArrayList<Category>(categoryList);
+        dummyList.sort(new CompareCategoryAmount());
+        return dummyList;
+    }
+
+
 
     // MODIFIES: category
     // EFFECTS: resets number of purchases and total spent on each category to 0

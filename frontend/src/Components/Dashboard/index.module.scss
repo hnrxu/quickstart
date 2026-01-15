@@ -1,4 +1,20 @@
 .dashboardLayout {
+    display: flex;
+    width:100%;
+    flex-direction: column;
+   
+
+}
+
+.gridContainer {
     display: grid;
-    grid-template-columns: 2fr, 1fr;
+    flex-grow: 1;
+    grid-template-columns: 2fr 1fr;
+    background-color: var(--main-color);;
+    width:100%;
+}
+
+.balance {
+    height: 300px;
+    flex-grow: 1;
 }

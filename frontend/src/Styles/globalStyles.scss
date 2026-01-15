@@ -1,0 +1,15 @@
+:root {
+    --main-h: 273;
+    --main-s: 58%;
+    --main-l: 96%;
+
+    --main-color: hsl(var(--main-h) var(--main-s) var(--main-l));
+    --border-color: hsl(var(--main-h) var(--main-s) 90%);
+    --shadow-color: hsl(var(--main-h) var(--main-s) 94%);
+}
+
+// get rid of automatic white border
+html, body {
+  margin: 0;
+  padding: 0;
+}

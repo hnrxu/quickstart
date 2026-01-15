@@ -25,6 +25,7 @@ import com.plaid.quickstart.resources.TransactionsResource;
 import com.plaid.quickstart.resources.TransferAuthorizeResource;
 import com.plaid.quickstart.resources.TransferCreateResource;
 import com.plaid.quickstart.resources.UserTokenResource;
+import com.plaid.quickstart.resources.RemoveItemResource;
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
@@ -152,6 +153,7 @@ public class QuickstartApplication extends Application<QuickstartConfiguration> 
     environment.jersey().register(new TransferCreateResource(plaidClient));
     environment.jersey().register(new UserTokenResource(plaidClient, plaidProducts));
     environment.jersey().register(new CraResource(plaidClient));
+    environment.jersey().register(new RemoveItemResource(plaidClient));
     environment.jersey().register(new SummaryDataResource());
   }
 

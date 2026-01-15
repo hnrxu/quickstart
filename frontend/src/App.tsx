@@ -8,6 +8,7 @@ import Transactions from "./Components/Transactions";
 import Dashboard from "./Components/Dashboard";
 
 import styles from "./App.module.scss";
+import "./Styles/globalStyles.scss";
 import { Products as PlaidProducts } from "plaid";
 
 const App = () => {
@@ -143,12 +144,14 @@ const App = () => {
   return (
     <div className={styles.App}>
       <div className={styles.container}>
-        <Header />
+        <div className={styles.headerContainer}>
+            <Header />
+        </div>
         {linkSuccess && (
           <>
           {!isPaymentInitiation && itemId && 
           <div>
-           
+           <Dashboard />
             
           </div>}
             

@@ -9,7 +9,11 @@ const Link = () => {
     useContext(Context);
 
   const onSuccess = React.useCallback(
-    (public_token: string) => {
+    (public_token: string, metadata: any) => {
+        console.log("🔥 onSuccess CALLED");
+        console.log("token:", public_token);
+        console.log("metadata:", metadata);
+        console.log("metadata account:", metadata.accounts);
       // If the access_token is needed, send public_token to server
       const exchangePublicTokenForAccessToken = async () => {
         // check this
