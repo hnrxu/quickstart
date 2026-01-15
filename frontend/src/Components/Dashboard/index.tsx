@@ -71,6 +71,8 @@ const Dashboard = () => {
         setSpentCategories(summaryData.most_spent_categories);
         setFreqStores(summaryData.most_frequent_stores);
         setSpentStores(summaryData.most_spent_stores);
+        console.log("freqCategories raw", summaryData.most_frequent_categories);
+        console.log("freqCategories length", summaryData.most_frequent_categories?.length);
     }
 
     const loadData = async () => { // need this await gguards to make sure transactions finished fetching before calling summary
@@ -109,6 +111,8 @@ const Dashboard = () => {
         setTransactions([]);
         setFreqCategories([]);
         setSpentCategories([]);
+        setFreqStores([]);
+        setSpentStores([]);
 
     }
 

@@ -14,6 +14,7 @@ type SummaryProps = {
 const SummaryWidget = ({freqCategories, spentCategories, freqStores, spentStores}: SummaryProps) => {
 
    
+    console.log(freqCategories)
     const getColorFromCss = (cssColor: string) => {
 
         return getComputedStyle(document.documentElement)
@@ -58,7 +59,7 @@ const SummaryWidget = ({freqCategories, spentCategories, freqStores, spentStores
                             interval={0} 
                             style={{
                                 fontFamily: "Inter",
-                                fontSize: 25
+                                fontSize: 15
                                 //fontWeight: 250
                                 }} 
                             stroke="black" 
@@ -188,7 +189,7 @@ const SummaryWidget = ({freqCategories, spentCategories, freqStores, spentStores
                         ))}
                     </div>
                     <ResponsiveContainer width="100%" height={300}>
-                        <BarChart  data={spentStores.slice(0,5)}>
+                        <BarChart  data={spentStores}>
                             <XAxis 
                             dataKey="name" 
                             interval={0} 
