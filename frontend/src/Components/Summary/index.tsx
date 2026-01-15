@@ -1,4 +1,4 @@
-import Dashboard, { Category } from "../Dashboard";
+import Dashboard, { Category, Store } from "../Dashboard";
 import styles from "./index.module.scss";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 
@@ -8,8 +8,10 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 
 type SummaryProps = {
     freqCategories: Category[];
     spentCategories: Category[];
+    freqStores: Store[];
+    spentStores: Store[];
 }
-const SummaryWidget = ({freqCategories, spentCategories}: SummaryProps) => {
+const SummaryWidget = ({freqCategories, spentCategories, freqStores, spentStores}: SummaryProps) => {
 
    
     const getColorFromCss = (cssColor: string) => {
@@ -32,6 +34,8 @@ const SummaryWidget = ({freqCategories, spentCategories}: SummaryProps) => {
 
     return <div className={styles.outerContainer}>
         <div className={styles.summariesContainer}>
+
+
             <div className={styles.catfreqChartContainer}>
                 <div className={styles.title}>
                     Most Frequent Expense Categories
@@ -48,7 +52,7 @@ const SummaryWidget = ({freqCategories, spentCategories}: SummaryProps) => {
                         ))}
                     </div>
                     <ResponsiveContainer width="100%" height={300}>
-                        <BarChart  data={freqCategories}>
+                        <BarChart  data={freqCategories.slice(0,5)}>
                             <XAxis 
                             dataKey="name" 
                             interval={0} 
@@ -74,9 +78,57 @@ const SummaryWidget = ({freqCategories, spentCategories}: SummaryProps) => {
                     </ResponsiveContainer>
                 </div>
             </div>
+
+
+
             <div className={styles.catfreqChartContainer}>
                 <div className={styles.title}>
-                    Most Spent Expense Categories
+                    Most Frequently Visited Stores
+                </div>
+                <div className={styles.catfreqChart}>
+                    <div className={styles.catFreqRank}>
+            
+                        {freqStores.slice(0,3).map((s, index) => (
+                        <div key={index} className={styles.rankBox}>
+                            <span className={`${styles.rankBadge} ${styles[`rank${index + 1}`]}`}>{index + 1}</span>
+                            <span className={styles.rankLabel}>{s.name}</span>
+                        </div>
+                        
+                        ))}
+                    </div>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <BarChart  data={freqStores.slice(0,5)}>
+                            <XAxis 
+                            dataKey="name" 
+                            interval={0} 
+                            style={{
+                                fontFamily: "Inter",
+                                //fontWeight: 250
+                                }} 
+                            stroke="black" 
+                            tick={{ fill: 'black'}} 
+                            tickFormatter={(value) => `${value.slice(0, 7)}...`} 
+                            ></XAxis>
+                            <YAxis stroke="black" tick={{ fill: 'black' }} />
+                            
+                            <Bar dataKey="num_purchases" fill="#b684d8ff" >
+                                {
+                                    freqCategories.map((bar, index) => (
+                                        <Cell key={index} fill={barColors[index % barColors.length]} />
+                                        
+                                    ))
+                                }
+                            </Bar> 
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
+
+
+
+            <div className={styles.catfreqChartContainer}>
+                <div className={styles.title}>
+                    Categories Most Spent At
                 </div>
                 <div className={styles.catfreqChart}>
                     <div className={styles.catFreqRank}>
@@ -90,7 +142,7 @@ const SummaryWidget = ({freqCategories, spentCategories}: SummaryProps) => {
                         ))}
                     </div>
                     <ResponsiveContainer width="100%" height={300}>
-                        <BarChart  data={spentCategories}>
+                        <BarChart  data={spentCategories.slice(0,5)}>
                             <XAxis 
                             dataKey="name" 
                             interval={0} 
@@ -116,6 +168,55 @@ const SummaryWidget = ({freqCategories, spentCategories}: SummaryProps) => {
                     </ResponsiveContainer>
                 </div>
             </div>
+
+
+
+            <div className={styles.catfreqChartContainer}>
+                <div className={styles.title}>
+                    Stores Most Spent At
+                </div>
+                <div className={styles.catfreqChart}>
+                    <div className={styles.catFreqRank}>
+            
+                        {spentStores.slice(0,3).map((s, index) => (
+                        <div key={index} className={styles.rankBox}>
+                            <span className={`${styles.rankBadge} ${styles[`rank${index + 1}`]}`}>{index + 1}</span>
+                            <span className={styles.rankLabel}>{s.name}</span>
+                        </div>
+                        
+                        ))}
+                    </div>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <BarChart  data={spentStores.slice(0,5)}>
+                            <XAxis 
+                            dataKey="name" 
+                            interval={0} 
+                            style={{
+                                fontFamily: "Inter",
+                                //fontWeight: 250
+                                }} 
+                            stroke="black" 
+                            tick={{ fill: 'black'}} 
+                            tickFormatter={(value) => `${value.slice(0, 7)}...`} 
+                            ></XAxis>
+                            <YAxis stroke="black" tick={{ fill: 'black' }} />
+                            
+                            <Bar dataKey="num_purchases" fill="#b684d8ff" >
+                                {
+                                    freqCategories.map((bar, index) => (
+                                        <Cell key={index} fill={barColors[index % barColors.length]} />
+                                        
+                                    ))
+                                }
+                            </Bar> 
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
+
+
+
+
         </div> 
         
     </div>

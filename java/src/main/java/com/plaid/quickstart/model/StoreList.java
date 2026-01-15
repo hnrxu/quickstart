@@ -95,8 +95,14 @@ public class StoreList implements Writable {
     }
     public List<Store> getSortedFreqStores() {
         List<Store> dummyList = new ArrayList<Store>(storeList);
-        dummyList.sort(new CompareStorePurchases());
-        return dummyList;
+        List<Store> filteredStoreList = new ArrayList<>();
+        for (Store s: dummyList) {
+            if (!s.getName().equals("N/A")) {
+                filteredStoreList.add(s);
+            }
+        }
+        filteredStoreList.sort(new CompareStorePurchases());
+        return filteredStoreList;
     }
     
 
@@ -109,8 +115,14 @@ public class StoreList implements Writable {
     }
    public List<Store> getSortedAmountStores() {
         List<Store> dummyList = new ArrayList<Store>(storeList);
-        dummyList.sort(new CompareStoreAmount());
-        return dummyList;
+       List<Store> filteredStoreList = new ArrayList<>();
+        for (Store s: dummyList) {
+            if (!s.getName().equals("N/A")) {
+                filteredStoreList.add(s);
+            }
+        }
+        filteredStoreList.sort(new CompareStoreAmount());
+        return filteredStoreList;
     }
 
 

@@ -205,11 +205,6 @@ public class Store implements Writable {
                 return false;
         } else if (!name.equals(other.name))
             return false;
-        if (category == null) {
-            if (other.category != null)
-                return false;
-        } else if (!category.equals(other.category))
-            return false;
         return true;
     }
    

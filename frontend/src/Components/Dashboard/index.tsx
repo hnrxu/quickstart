@@ -27,6 +27,10 @@ export type Store = {
     num_purchases: number;
     total_spent: number;
     budget?: number | null;
+    category: Category;
+    storetype: string;
+    location?: string | null;
+
 }
 
 const Dashboard = () => {
@@ -34,6 +38,8 @@ const Dashboard = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [freqCategories, setFreqCategories] = useState<Category[]>([]); 
     const [spentCategories, setSpentCategories] = useState<Category[]>([]); 
+     const [freqStores, setFreqStores] = useState<Store[]>([]); 
+    const [spentStores, setSpentStores] = useState<Store[]>([]); 
 
     
 
@@ -61,8 +67,10 @@ const Dashboard = () => {
         }
         const summaryData = await response.json();
         setFreqCategories(summaryData.most_frequent_categories);
-        console.log("LOOK HERE", summaryData.most_frequent_categories);
+        //console.log("LOOK HERE", summaryData.most_frequent_categories);
         setSpentCategories(summaryData.most_spent_categories);
+        setFreqStores(summaryData.most_frequent_stores);
+        setSpentStores(summaryData.most_spent_stores);
     }
 
     const loadData = async () => { // need this await gguards to make sure transactions finished fetching before calling summary
@@ -118,7 +126,9 @@ const Dashboard = () => {
                 </div>
                 <div> 
                     <SummaryWidget freqCategories={freqCategories}
-                                spentCategories={spentCategories} />
+                                spentCategories={spentCategories}
+                                freqStores={freqStores}
+                                spentStores={spentStores} />
                 </div>
             </div>
            
