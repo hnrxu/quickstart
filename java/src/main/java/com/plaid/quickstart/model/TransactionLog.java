@@ -151,6 +151,16 @@ public class TransactionLog implements Writable {
        return categoryList.getSortedAmountCategories();
     }
 
+     // EFFECTS: returns categories in sotrted list by num purchases
+    public List<Store> getSortedFreqStores() {
+       return storeList.getSortedFreqStores();
+    }
+
+    // EFFECTS: returns categories in sotrted list by total spent
+    public List<Store> getSortedAmountStores() {
+       return storeList.getSortedAmountStores();
+    }
+
 
     // REQUIRES: number of transactions > 0
     // EFFECTS: returns an easily readable form of transactions in the log

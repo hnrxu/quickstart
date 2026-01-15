@@ -1,6 +1,7 @@
 package com.plaid.quickstart.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -84,6 +85,34 @@ public class StoreList implements Writable {
         }
         return mostSpent;
     }
+
+    // EFFECTS: returns categories in sotrted list by num purchases
+    private class CompareStorePurchases implements Comparator<Store> {
+        @Override
+        public int compare(Store s1, Store s2) {
+            return Integer.compare(s2.getNumPurchases(),s1.getNumPurchases());
+        }
+    }
+    public List<Store> getSortedFreqStores() {
+        List<Store> dummyList = new ArrayList<Store>(storeList);
+        dummyList.sort(new CompareStorePurchases());
+        return dummyList;
+    }
+    
+
+    // EFFECTS: returns categories in sotrted list by total spent
+   private class CompareStoreAmount implements Comparator<Store> {
+        @Override
+        public int compare(Store s1, Store s2) {
+            return Double.compare(s2.getTotalSpent(),s1.getTotalSpent());
+        }
+    }
+   public List<Store> getSortedAmountStores() {
+        List<Store> dummyList = new ArrayList<Store>(storeList);
+        dummyList.sort(new CompareStoreAmount());
+        return dummyList;
+    }
+
 
     // will add more methods like summaries, averages later
 
