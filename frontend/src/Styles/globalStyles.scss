@@ -1,17 +1,33 @@
 :root {
-    --main-h: 273;
-    --main-s: 58%;
-    --main-l: 60%;
+    --main-h: 264;
+    --main-s: 81%;
+    --main-l: 83%;
 
     --main-color: hsl(var(--main-h) var(--main-s) var(--main-l));
     --border-color: hsl(var(--main-h) var(--main-s) 90%);
-    --shadow-color: hsl(var(--main-h) var(--main-s) calc(var(--main-l) - 6%));
+    --shadow-color: hsl(var(--main-h) var(--main-s) calc(var(--main-l) - 25%));
+    --shadow-color-2: hsl(var(--main-h) var(--main-s) calc(var(--main-l) - 10%));
+
 
     --main-color-bar-1: hsl(var(--main-h) var(--main-s) 30%);
     --main-color-bar-2: hsl(var(--main-h) var(--main-s) 40%);
     --main-color-bar-3: hsl(var(--main-h) var(--main-s) 50%);
     --main-color-bar-4: hsl(var(--main-h) var(--main-s) 60%);
     --main-color-bar-5: hsl(var(--main-h) var(--main-s) 70%);
+
+    --lavender: #CEB2F7;
+    --pink:     #fcc7f4;
+    --pink2:     #fdbaf3;
+    --pink3:     #fba5ee;
+    --pink4:     #f879e5;
+    --lilac:    #b578f7;
+    --brightpurple:    #b92bf6;
+    --magenta:  #D338E4;
+    --outline:  #460B64;
+    --outline2: #5b1a67;
+    --outline3: #af3dc3;
+    --white:    #FDFDFD;
+    --shadow:    #a68197;
 }
 
 // get rid of automatic white border

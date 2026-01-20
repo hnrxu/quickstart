@@ -45,17 +45,28 @@ const Transactions = ({transactions}: TransactionsProps) => {
 
     return <div> 
         <div className={styles.title}><b>Transactions</b></div>
-        <div className={styles.transactionContainer}>
-        {transactions.map((t, index) => (<div 
-        key={t.transaction_id}>
-                {showDate(index, t.date) && <div className={styles.dateContainer}>{formatDate(t.date)}</div>}
+        <div className={styles.transactionContainerShadow}>
             
-            <div className={styles.transactionInfo}>
+            
                 
-                <div className={styles.name}>{t.name}</div> <div className={styles.amount}>{formatAmount(t.amount)} </div>
-                
+            
+
+            <div className={styles.transactionContainer}>
+                <div className={styles.scrollWrapper}>
+                    {transactions.map((t, index) => (<div 
+                    key={t.transaction_id}>
+                            {showDate(index, t.date) && <div className={styles.dateContainer}>{formatDate(t.date)}</div>}
+                        
+                        <div className={styles.transactionInfo}>
+                            
+                            <div className={styles.name}>{t.name}</div> <div className={styles.amount}>{formatAmount(t.amount)} </div>
+                            
+                        </div>
+                        </div>))}
+                </div>
             </div>
-            </div>))}
+
+
         </div>
     </div>
 }
