@@ -39,18 +39,14 @@ public class TokenStore {
 
     public static void deleteToken() {
     String redisUrl = System.getenv("REDIS_URL");
-    System.out.println("Deleting from Redis URL: " + redisUrl); // Debug log
     
     try (Jedis jedis = new Jedis(URI.create(redisUrl))) {
-        // Test connection
-        String pong = jedis.ping();
-        System.out.println("Redis ping: " + pong); // Should print "PONG"
+    
         
-        Long deleted1 = jedis.del("itemId");
-        Long deleted2 = jedis.del("accessToken");
+        jedis.del("itemId");
+        jedis.del("accessToken");
         
-        System.out.println("Deleted itemId: " + deleted1); // Should be 1 if existed, 0 if not
-        System.out.println("Deleted accessToken: " + deleted2); // Should be 1 if existed, 0 if not
+      
         
     } catch (Exception e) {
         System.err.println("Error deleting from Redis: " + e.getMessage());
