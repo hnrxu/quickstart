@@ -25,7 +25,7 @@ public class TokenStore {
     }
 
     public static JSONObject loadToken() {
-        try (Jedis jedis = new Jedis(URI.create("rediss://default:********@loved-weasel-42696.upstash.io:6379"))) {
+        try (Jedis jedis = new Jedis(URI.create(System.getenv("UPSTASH_URL")))) {
             String itemId = jedis.get("itemId");
             String accessToken = jedis.get("accessToken");   
             JSONObject userInfo = new JSONObject();
