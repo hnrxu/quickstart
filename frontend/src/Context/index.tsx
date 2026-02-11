@@ -8,6 +8,7 @@ interface QuickstartState {
   isCraProductsExclusively: boolean;
   linkToken: string | null;
   accessToken: string | null;
+  hasAccessToken: boolean;
   userToken: string | null;
   userId: string | null;
   itemId: string | null;
@@ -31,6 +32,7 @@ const initialState: QuickstartState = {
   userToken: null,
   userId: null,
   accessToken: null,
+  hasAccessToken: false,
   itemId: null,
   isError: false,
   backend: true,

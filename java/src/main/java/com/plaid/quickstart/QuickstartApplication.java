@@ -21,6 +21,7 @@ import com.plaid.quickstart.resources.PublicTokenResource;
 import com.plaid.quickstart.resources.SignalResource;
 import com.plaid.quickstart.resources.StatementsResource;
 import com.plaid.quickstart.resources.SummaryDataResource;
+import com.plaid.quickstart.resources.TokenStore;
 import com.plaid.quickstart.resources.TransactionsResource;
 import com.plaid.quickstart.resources.TransferAuthorizeResource;
 import com.plaid.quickstart.resources.TransferCreateResource;
@@ -41,6 +42,7 @@ import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 
 import org.eclipse.jetty.servlets.CrossOriginFilter;
+import org.json.JSONObject;
 
 public class QuickstartApplication extends Application<QuickstartConfiguration> {
   // We store the accessToken in memory - in production, store it in a secure
@@ -131,6 +133,16 @@ public class QuickstartApplication extends Application<QuickstartConfiguration> 
     );
     cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 
+    JSONObject userInfo = TokenStore.loadToken();
+    if (userInfo != null) {
+        if (userInfo.optString("accessToken", null) != null) {
+            accessToken = userInfo.optString("accessToken", null);
+        }
+        if (userInfo.optString("itemId", null) != null) {
+            itemId = userInfo.optString("itemId");
+        }
+    }
+    
 
     environment.jersey().register(new AccessTokenResource(plaidClient, plaidProducts));
     environment.jersey().register(new AccountsResource(plaidClient));

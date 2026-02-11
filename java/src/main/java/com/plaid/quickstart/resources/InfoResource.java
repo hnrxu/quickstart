@@ -26,11 +26,15 @@ public class InfoResource {
     private final String accessToken;
     @JsonProperty
     private final List<String> products;
+    @JsonProperty
+    private final boolean hasAccessToken;
+
 
     public InfoResponse(List<String> plaidProducts, String accessToken, String itemId) {
       this.products = plaidProducts;
       this.accessToken = accessToken;
       this.itemId = itemId;
+      this.hasAccessToken = accessToken != null && !accessToken.isBlank();
     }
   }
 

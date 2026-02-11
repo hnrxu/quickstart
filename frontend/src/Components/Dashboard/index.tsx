@@ -11,6 +11,9 @@ export type Transaction = {
         amount: number;
         merchant_name?: string | null;
         date: dateArray;
+        personal_finance_category: {
+            primary: string;
+        };
     }
 export type dateArray = [number, number, number];
 
@@ -38,7 +41,7 @@ const Dashboard = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [freqCategories, setFreqCategories] = useState<Category[]>([]); 
     const [spentCategories, setSpentCategories] = useState<Category[]>([]); 
-     const [freqStores, setFreqStores] = useState<Store[]>([]); 
+    const [freqStores, setFreqStores] = useState<Store[]>([]); 
     const [spentStores, setSpentStores] = useState<Store[]>([]); 
 
     

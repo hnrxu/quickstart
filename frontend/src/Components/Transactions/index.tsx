@@ -41,6 +41,13 @@ const Transactions = ({transactions}: TransactionsProps) => {
         return formattedAmount;
     }
 
+    const filterTransactions = (categories: string []) => 
+        transactions.filter((t, index) => 
+            categories.includes(t.personal_finance_category.primary)
+        )
+      
+    
+
     {if(transactions.length === 0) {return <div> loading...</div>}}
 
     return <div> 

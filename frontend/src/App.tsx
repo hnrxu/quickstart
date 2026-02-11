@@ -20,7 +20,7 @@ const App = () => {
     const response = await fetch("https://quickstart-lwsu.onrender.com/api/info", { method: "POST" });
     if (!response.ok) {
       dispatch({ type: "SET_STATE", state: { backend: false } });
-      return { paymentInitiation: false };
+      return { paymentInitiation: false, isUserTokenFlow: false, hasAccessToken: false};
     }
     const data = await response.json();
     const paymentInitiation: boolean =
@@ -34,6 +34,9 @@ const App = () => {
     const isCraProductsExclusively: boolean =
       craProducts.length > 0 && craProducts.length === data.products.length;
 
+    const hasAccessToken = Boolean(data.has_access_token);
+    const itemId = data.item_id ?? null;
+
     dispatch({
       type: "SET_STATE",
       state: {
@@ -41,9 +44,12 @@ const App = () => {
         isPaymentInitiation: paymentInitiation,
         isCraProductsExclusively: isCraProductsExclusively,
         isUserTokenFlow: isUserTokenFlow,
+        hasAccessToken: hasAccessToken,
+        linkSuccess: hasAccessToken,
+        itemId: itemId
       },
     });
-    return { paymentInitiation, isUserTokenFlow };
+    return { paymentInitiation, isUserTokenFlow, hasAccessToken };
   }, [dispatch]);
 
   const generateUserToken = useCallback(async () => {
@@ -112,7 +118,7 @@ const App = () => {
 
   useEffect(() => {
     const init = async () => {
-      const { paymentInitiation, isUserTokenFlow } = await getInfo(); // used to determine which path to take when generating token
+      const { paymentInitiation, isUserTokenFlow, hasAccessToken } = await getInfo(); // used to determine which path to take when generating token
       // do not generate a new token for OAuth redirect; instead
       // setLinkToken from localStorage
       if (window.location.href.includes("?oauth_state_id=")) {
@@ -128,7 +134,9 @@ const App = () => {
       if (isUserTokenFlow) {
         await generateUserToken();
       } // check this
-      await generateToken(paymentInitiation);
+      if (!hasAccessToken) {
+        await generateToken(paymentInitiation);
+      }
     };
     init();
   }, [dispatch, generateToken, generateUserToken, getInfo]);

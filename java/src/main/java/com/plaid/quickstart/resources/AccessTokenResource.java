@@ -43,12 +43,11 @@ public class AccessTokenResource {
       .itemPublicTokenExchange(request)
       .execute();
 
-    // Ideally, we would store this somewhere more persistent
-    QuickstartApplication.
-      accessToken = response.body().getAccessToken();
+    TokenStore.saveToken(response.body().getAccessToken(), response.body().getItemId());
+    QuickstartApplication.accessToken = response.body().getAccessToken();
     QuickstartApplication.itemId = response.body().getItemId();
     LOG.info("public token: " + publicToken);
-    LOG.info("access token: " + QuickstartApplication.accessToken);
+    //LOG.info("access token: " + QuickstartApplication.accessToken);
     LOG.info("item ID: " + response.body().getItemId());
     return new InfoResource.InfoResponse(Arrays.asList(), QuickstartApplication.accessToken,
       QuickstartApplication.itemId);

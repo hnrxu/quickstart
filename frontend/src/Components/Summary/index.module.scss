@@ -8,6 +8,7 @@
     margin-right: 40px;
     border-radius: 15px;
     gap:40px;
+    
    
     
 }
@@ -15,6 +16,7 @@
 // only added this to allow the top one to grow to full length
 .outerContainer {
     height: 100%;
+    
     
     
 }
@@ -52,7 +54,7 @@
 }
 
 .catfreqChartContainer:hover {
-  transform: translateY(-4px) scale(1.01);
+  transform: translateY(4px) scale(1.01);
   //box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.25);
 }
 
@@ -61,11 +63,16 @@
 .catfreqChartContainerShadow{
   display: inline-block;
   filter: drop-shadow(-8px 8px 0 var(--outline3));
-  width: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  // used to stabilize hovering
+  transform: translateZ(0);
+  will-change: transform, filter;
+
 }
 
 .catfreqChartContainerShadow:hover {
-  transform: translateY(-4px) scale(1.01);
+  transform: translateY(4px) scale(1.01);
   //box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.25);
 }
 ///////////////////////////////////

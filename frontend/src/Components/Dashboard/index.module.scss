@@ -9,13 +9,14 @@
 .gridContainer {
     display: grid;
     flex-grow: 1;
-    grid-template-columns: 1.7fr 1fr;
+    grid-template-columns: 1.5fr 1fr;
     background-color: var(--lavender);
+    gap: 20px;
     width:100%;
 }
 
 .balance {
-    height: 300px;
+    height: 200px;
     flex-grow: 1;
 }
 
