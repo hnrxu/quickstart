@@ -36,4 +36,14 @@ public class TokenStore {
         
         
     }
+
+    public static void deleteToken() {
+        try (Jedis jedis = new Jedis(URI.create(System.getenv("REDIS_URL")))) {
+            jedis.del("itemId");
+            jedis.del("accessToken");   
+            
+        }
+        
+        
+    }
 }

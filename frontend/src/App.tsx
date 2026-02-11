@@ -12,164 +12,189 @@ import "./Styles/globalStyles.scss";
 import { Products as PlaidProducts } from "plaid";
 
 const App = () => {
-  const { linkSuccess, isPaymentInitiation, itemId, dispatch } =
-    useContext(Context);
+    const { linkSuccess, isPaymentInitiation, itemId, accessToken, dispatch } =
+        useContext(Context);
+   
 
-  const getInfo = useCallback(async () => {
-    // check this
-    const response = await fetch("https://quickstart-lwsu.onrender.com/api/info", { method: "POST" });
-    if (!response.ok) {
-      dispatch({ type: "SET_STATE", state: { backend: false } });
-      return { paymentInitiation: false, isUserTokenFlow: false, hasAccessToken: false};
-    }
-    const data = await response.json();
-    const paymentInitiation: boolean =
-      data.products.includes("payment_initiation");
+    //const [isLoading, setLoading] = useState(true);
 
-    // CRA products are those that start with "cra_"
-    const craProducts = data.products.filter((product: string) =>
-      product.startsWith("cra_")
-    );
-    const isUserTokenFlow: boolean = craProducts.length > 0;
-    const isCraProductsExclusively: boolean =
-      craProducts.length > 0 && craProducts.length === data.products.length;
+    const getInfo = useCallback(async () => {
+        // check this
+        const response = await fetch("https://quickstart-lwsu.onrender.com/api/info", { method: "POST" });
+        if (!response.ok) {
+        dispatch({ type: "SET_STATE", state: { backend: false } });
+        return { paymentInitiation: false, isUserTokenFlow: false, hasAccessToken: false};
+        }
+        const data = await response.json();
+        const paymentInitiation: boolean =
+        data.products.includes("payment_initiation");
 
-    const hasAccessToken = Boolean(data.has_access_token);
-    const itemId = data.item_id ?? null;
+        // CRA products are those that start with "cra_"
+        const craProducts = data.products.filter((product: string) =>
+        product.startsWith("cra_")
+        );
+        const isUserTokenFlow: boolean = craProducts.length > 0;
+        const isCraProductsExclusively: boolean =
+        craProducts.length > 0 && craProducts.length === data.products.length;
 
-    dispatch({
-      type: "SET_STATE",
-      state: {
-        products: data.products,
-        isPaymentInitiation: paymentInitiation,
-        isCraProductsExclusively: isCraProductsExclusively,
-        isUserTokenFlow: isUserTokenFlow,
-        hasAccessToken: hasAccessToken,
-        linkSuccess: hasAccessToken,
-        itemId: itemId
-      },
-    });
-    return { paymentInitiation, isUserTokenFlow, hasAccessToken };
-  }, [dispatch]);
+        const hasAccessToken = Boolean(data.has_access_token);
+        const itemId = data.item_id ?? null;
 
-  const generateUserToken = useCallback(async () => {
-    // check this
-    const response = await fetch("https://quickstart-lwsu.onrender.com/api/create_user_token", { method: "POST" });
-    if (!response.ok) {
-      dispatch({ type: "SET_STATE", state: { userToken: null, userId: null } });
-      return;
-    }
-    const data = await response.json();
-    if (data) {
-      if (data.error != null) {
         dispatch({
-          type: "SET_STATE",
-          state: {
-            linkToken: null,
-            linkTokenError: data.error,
-          },
-        });
-        return;
-      }
-      dispatch({
         type: "SET_STATE",
         state: {
-          userToken: data.user_token || null,
-          userId: data.user_id || null
-        }
-      });
-      return data.user_token || data.user_id;
-    }
-  }, [dispatch]);
+            products: data.products,
+            isPaymentInitiation: paymentInitiation,
+            isCraProductsExclusively: isCraProductsExclusively,
+            isUserTokenFlow: isUserTokenFlow,
+            hasAccessToken: hasAccessToken,
+            linkSuccess: hasAccessToken,
+            itemId: itemId
+        },
+        });
 
-  const generateToken = useCallback(
-    async (isPaymentInitiation: boolean) => {
-      // Link tokens for 'payment_initiation' use a different creation flow in your backend.
-      const path = isPaymentInitiation
-      // check this
-        ? "api/create_link_token_for_payment"
-        : "api/create_link_token";
-      const response = await fetch(`https://quickstart-lwsu.onrender.com/${path}`, {
-        method: "POST",
-      });
-      if (!response.ok) {
-        dispatch({ type: "SET_STATE", state: { linkToken: null } });
+       
+        return { paymentInitiation, isUserTokenFlow, hasAccessToken };
+    }, [dispatch]);
+
+    const generateUserToken = useCallback(async () => {
+        // check this
+        const response = await fetch("https://quickstart-lwsu.onrender.com/api/create_user_token", { method: "POST" });
+        if (!response.ok) {
+        dispatch({ type: "SET_STATE", state: { userToken: null, userId: null } });
         return;
-      }
-      const data = await response.json();
-      if (data) {
+        }
+        const data = await response.json();
+        if (data) {
         if (data.error != null) {
-          dispatch({
+            dispatch({
             type: "SET_STATE",
             state: {
-              linkToken: null,
-              linkTokenError: data.error,
+                linkToken: null,
+                linkTokenError: data.error,
             },
-          });
-          return;
+            });
+            return;
         }
-        dispatch({ type: "SET_STATE", state: { linkToken: data.link_token } });
-      }
-      // Save the link_token to be used later in the Oauth flow.
-      localStorage.setItem("link_token", data.link_token);
-    },
-    [dispatch]
-  );
-
-  useEffect(() => {
-    const init = async () => {
-      const { paymentInitiation, isUserTokenFlow, hasAccessToken } = await getInfo(); // used to determine which path to take when generating token
-      // do not generate a new token for OAuth redirect; instead
-      // setLinkToken from localStorage
-      if (window.location.href.includes("?oauth_state_id=")) {
         dispatch({
-          type: "SET_STATE",
-          state: {
-            linkToken: localStorage.getItem("link_token"),
-          },
+            type: "SET_STATE",
+            state: {
+            userToken: data.user_token || null,
+            userId: data.user_id || null
+            }
         });
-        return;
-      }
+        return data.user_token || data.user_id;
+        }
+    }, [dispatch]);
 
-      if (isUserTokenFlow) {
-        await generateUserToken();
-      } // check this
-      if (!hasAccessToken) {
-        await generateToken(paymentInitiation);
-      }
-    };
-    init();
-  }, [dispatch, generateToken, generateUserToken, getInfo]);
+    const generateToken = useCallback(
+        async (isPaymentInitiation: boolean) => {
+        // Link tokens for 'payment_initiation' use a different creation flow in your backend.
+        const path = isPaymentInitiation
+        // check this
+            ? "api/create_link_token_for_payment"
+            : "api/create_link_token";
+        const response = await fetch(`https://quickstart-lwsu.onrender.com/${path}`, {
+            method: "POST",
+        });
+        if (!response.ok) {
+            dispatch({ type: "SET_STATE", state: { linkToken: null } });
+            return;
+        }
+        const data = await response.json();
+        if (data) {
+            if (data.error != null) {
+            dispatch({
+                type: "SET_STATE",
+                state: {
+                linkToken: null,
+                linkTokenError: data.error,
+                },
+            });
+            return;
+            }
+            dispatch({ type: "SET_STATE", state: { linkToken: data.link_token } });
+        }
+        // Save the link_token to be used later in the Oauth flow.
+        localStorage.setItem("link_token", data.link_token);
+        },
+        [dispatch]
+    );
+
+    useEffect(() => {
+        const init = async () => {
+            const { paymentInitiation, isUserTokenFlow, hasAccessToken } = await getInfo(); // used to determine which path to take when generating token
+            // do not generate a new token for OAuth redirect; instead
+            // setLinkToken from localStorage
+            if (window.location.href.includes("?oauth_state_id=")) {
+                dispatch({
+                type: "SET_STATE",
+                state: {
+                    linkToken: localStorage.getItem("link_token"),
+                },
+                });
+                return;
+            }
+
+            if (isUserTokenFlow) {
+                await generateUserToken();
+            } // check this
+            if (!hasAccessToken) {
+                await generateToken(paymentInitiation);
+            }
+
+            //setLoading(false);
+             console.log("Current itemId:", itemId);  // Check if itemId exists
+              console.log("Current itemId:", hasAccessToken);  // Check if itemId exists
+        console.log("Current accessToken:", accessToken);  // Check token too
+
+        };
+
+        init();
+    }, [dispatch, generateToken, generateUserToken, getInfo]);
 
 
 
 
 
-  
+    // if (isLoading) {
+    //     return (
+    //         <div className={styles.App}>
+    //             <div className={styles.container}>
+    //             <div style={{ textAlign: 'center', padding: '50px' }}>
+    //                 Loading...
+    //             </div>
+    //             </div>
+    //         </div>
+    //     );
+    // }
+    
 
 
 
-  return (
-    <div className={styles.App}>
-      <div className={styles.container}>
-        <div className={styles.headerContainer}>
-            <Header />
+    return (
+        <div className={styles.App}>
+        <div className={styles.container}>
+            <div className={styles.headerContainer}>
+        
+                <Header />
+                
+            </div>
+            {linkSuccess && (
+            <>
+            {!isPaymentInitiation && itemId && 
+            <div>
+                <Dashboard />
+                
+            </div>}
+                
+                {/* <Products />
+                {!isPaymentInitiation && itemId && <Items />} */}
+            </>
+            )}
         </div>
-        {linkSuccess && (
-          <>
-          {!isPaymentInitiation && itemId && 
-          <div>
-           <Dashboard />
-            
-          </div>}
-            
-            {/* <Products />
-            {!isPaymentInitiation && itemId && <Items />} */}
-          </>
-        )}
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
    

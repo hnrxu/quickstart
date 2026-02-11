@@ -48,7 +48,9 @@ const Transactions = ({transactions}: TransactionsProps) => {
       
     
 
-    {if(transactions.length === 0) {return <div> loading...</div>}}
+    if (!transactions || transactions.length === 0) {
+        return <div>Loading...</div>;
+    }
 
     return <div> 
         <div className={styles.title}><b>Transactions</b></div>

@@ -102,11 +102,13 @@ const Dashboard = () => {
             return;
         }
 
+        
         dispatch({
             type: "SET_STATE",
             state: { linkSuccess: false, 
                 itemId: null, 
                 accessToken: null, 
+                hasAccessToken: false,
                 isItemAccess: false}
            
         });

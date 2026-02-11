@@ -47,6 +47,8 @@ public class RemoveItemResource {
                     .build();
             }
 
+            TokenStore.deleteToken();
+
             QuickstartApplication.accessToken = null;
             return Response.ok("{\"ok\":true}").build();
 
