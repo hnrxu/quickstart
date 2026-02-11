@@ -12,7 +12,7 @@ public class TokenStore {
     
 
     public static void saveToken(String accessToken, String itemId) {
-        try (Jedis jedis = new Jedis(URI.create(System.getenv("UPSTASH_URL")))) {
+        try (Jedis jedis = new Jedis(URI.create(System.getenv("REDIS_URL")))) {
             if (itemId != null) {
                 jedis.set("itemId", itemId);
             }
@@ -25,7 +25,7 @@ public class TokenStore {
     }
 
     public static JSONObject loadToken() {
-        try (Jedis jedis = new Jedis(URI.create(System.getenv("UPSTASH_URL")))) {
+        try (Jedis jedis = new Jedis(URI.create(System.getenv("REDIS_URL")))) {
             String itemId = jedis.get("itemId");
             String accessToken = jedis.get("accessToken");   
             JSONObject userInfo = new JSONObject();
