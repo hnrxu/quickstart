@@ -139,7 +139,7 @@ const App = () => {
             if (isUserTokenFlow) {
                 await generateUserToken();
             } // check this
-            if (!hasAccessToken) {
+            if (!hasAccessToken || accessToken == null) {
                 await generateToken(paymentInitiation);
             }
 

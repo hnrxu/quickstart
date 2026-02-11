@@ -30,6 +30,8 @@ public class RemoveItemResource {
 
     @POST
     public Response removeItem() {
+        TokenStore.deleteToken();
+        
         if (QuickstartApplication.accessToken == null) {
             return Response.status(400).entity("{\"error\":\"No item to remove\"}").build();
         }
@@ -47,7 +49,7 @@ public class RemoveItemResource {
                     .build();
             }
 
-            TokenStore.deleteToken();
+            
 
             QuickstartApplication.accessToken = null;
             return Response.ok("{\"ok\":true}").build();
