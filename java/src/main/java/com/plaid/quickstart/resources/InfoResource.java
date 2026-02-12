@@ -10,6 +10,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.json.JSONObject;
+
 @Path("/info")
 @Produces(MediaType.APPLICATION_JSON)
 public class InfoResource {
@@ -40,7 +42,19 @@ public class InfoResource {
 
   @POST
   public InfoResponse getInfo() {
-    return new InfoResponse(plaidProducts, QuickstartApplication.accessToken,
-      QuickstartApplication.itemId);
+    String accessToken = null;
+    String itemId = null;
+
+    JSONObject userInfo = TokenStore.loadToken();
+    if (userInfo != null) {
+        if (userInfo.optString("accessToken", null) != null) {
+            accessToken = userInfo.optString("accessToken", null);
+        }
+        if (userInfo.optString("itemId", null) != null) {
+            itemId = userInfo.optString("itemId");
+        }
+    }
+    return new InfoResponse(plaidProducts, accessToken,
+        itemId);
   }
 }

@@ -66,11 +66,14 @@ const Transactions = ({transactions}: TransactionsProps) => {
                     key={t.transaction_id}>
                             {showDate(index, t.date) && <div className={styles.dateContainer}>{formatDate(t.date)}</div>}
                         
-                        <div className={styles.transactionInfo}>
-                            
-                            <div className={styles.name}>{t.name}</div> <div className={styles.amount}>{formatAmount(t.amount)} </div>
-                            
+    
+                        <div className={styles.transactionInfoWrapper}>
+                            <div className={styles.transactionInfo}>  
+                                <div className={styles.name}>{t.name}</div> <div className={styles.amount}>{formatAmount(t.amount)} </div>     
+                            </div>
+
                         </div>
+                       
                         </div>))}
                 </div>
             </div>

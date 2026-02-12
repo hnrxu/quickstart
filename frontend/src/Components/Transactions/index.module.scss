@@ -12,11 +12,28 @@
     align-items: center;
     flex-grow: 1;
 
+    transition: transform 0.2s ease-out;
+    transform-origin: center;
+
+
+
 }
 
 .transactionInfo:hover {
     background: var(--pink2);
+    transform: scaleX(0.985) scaleY(0.86);
   
+}
+
+.transactionInfoWrapper {
+    background-color: var(--pink2);
+    width: 100%;
+
+  
+}
+
+.transactionInfoWrapper:hover {
+    background: var(--pink3);
 }
 
 .transactionContainerShadow{

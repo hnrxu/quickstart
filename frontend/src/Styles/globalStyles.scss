@@ -39,5 +39,10 @@
 html, body {
   margin: 0;
   padding: 0;
+  cursor: url("/assets/Hand3.png") 16 16, auto;
+}
+
+* {
+  cursor: url("/assets/Hand3.png") 16 16, auto;
 }
 

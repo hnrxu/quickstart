@@ -119,6 +119,8 @@ const Dashboard = () => {
             return;
         }
 
+        console.log("removeitem status", response.status, "body", response.text());
+
         
         dispatch({
             type: "SET_STATE",
