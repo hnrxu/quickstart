@@ -48,6 +48,7 @@ const App = () => {
             isCraProductsExclusively: isCraProductsExclusively,
             isUserTokenFlow: isUserTokenFlow,
             hasAccessToken: hasAccessToken,
+            accessToken: "fake",
             linkSuccess: hasAccessToken,
             itemId: itemId
         },

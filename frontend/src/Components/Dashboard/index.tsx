@@ -3,6 +3,7 @@ import Transactions from "../Transactions";
 import SummaryWidget from "../Summary";
 import styles from "./index.module.scss";
 import Context from "../../Context";
+import Loading from "../Loading";
 
 /// types (may nove later??)
 export type Transaction = {
@@ -38,15 +39,18 @@ export type Store = {
 
 const Dashboard = () => {
 
+    const { accessToken, dispatch } = useContext(Context);
+
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [freqCategories, setFreqCategories] = useState<Category[]>([]); 
     const [spentCategories, setSpentCategories] = useState<Category[]>([]); 
     const [freqStores, setFreqStores] = useState<Store[]>([]); 
     const [spentStores, setSpentStores] = useState<Store[]>([]); 
 
+    const[isLoading, setLoading] = useState(true);
+
     
 
-    useEffect(() => {
     const fetchTransactions = async () => {
         const response = await fetch(
         "https://quickstart-lwsu.onrender.com/api/transactions",
@@ -78,21 +82,31 @@ const Dashboard = () => {
         console.log("freqCategories raw", summaryData.most_frequent_categories);
         console.log("freqCategories length", summaryData.most_frequent_categories?.length);
     }
+    
+    console.log("Dashboard render accessToken:", accessToken);
 
-    const loadData = async () => { // need this await gguards to make sure transactions finished fetching before calling summary
-        await new Promise(resolve => setTimeout(resolve, 500)) /// because somtime the dashboard fetches transacitons before accesstoken is set
-        // change to retry instead of wait to make more robust
-        await fetchTransactions();
-        await fetchSummaryData();
-    }
+    useEffect(() => {
+        console.log("effect ran, accessToken:", accessToken);
+        if (!accessToken) {
+            setLoading(true);
+            return;
+        }
+        const loadData = async () => { // need this await gguards to make sure transactions finished fetching before calling summary
+            //await new Promise(resolve => setTimeout(resolve, 500)) /// because somtime the dashboard fetches transacitons before accesstoken is set
+            // change to retry instead of wait to make more robust
+            await fetchTransactions();
+            await fetchSummaryData();
+            setLoading(false);
+        }
 
-    loadData();
+        loadData();
+    }, [accessToken])
+    
     
 
-    
-    }, []);
 
-    const{ dispatch } = useContext(Context); /// allows me to update linksuccess
+
+    
 
     // disconnecting item logic to prevent items getting clogged up as rn they are in memory
     const removeItem = async () => {
@@ -112,7 +126,8 @@ const Dashboard = () => {
                 itemId: null, 
                 accessToken: null, 
                 hasAccessToken: false,
-                isItemAccess: false}
+                isItemAccess: false,
+                linkToken: null}
            
         });
 
@@ -126,23 +141,37 @@ const Dashboard = () => {
 
 
     return <div>
-        <div className={styles.dashboardLayout}> 
-            <button type="button" onClick={() => removeItem()}>disconnect from bank </button> 
-            <div className={styles.balance}>
-                hello
+        <div className={styles.dashboardLayout}>
+            <div className={`${styles.panel} ${isLoading ? styles.show : styles.hide}`}>
+                <Loading />
+            </div>
 
-            </div>
-            <div className={styles.gridContainer}>
-                <div> 
-                    <Transactions transactions={transactions}/>
+            {!isLoading &&
+                <div className={`${!isLoading ? styles.show : styles.hide}`}>
+
+                <button type="button" onClick={() => removeItem()}>disconnect from bank </button> 
+                <div className={styles.balance}>
+                    hello
+
                 </div>
-                <div> 
-                    <SummaryWidget freqCategories={freqCategories}
-                                spentCategories={spentCategories}
-                                freqStores={freqStores}
-                                spentStores={spentStores} />
+                <div className={styles.gridContainer}>
+                    <div> 
+                        <Transactions transactions={transactions}/>
+                    </div>
+                    <div> 
+                        <SummaryWidget freqCategories={freqCategories}
+                                    spentCategories={spentCategories}
+                                    freqStores={freqStores}
+                                    spentStores={spentStores} />
+                    </div>
                 </div>
-            </div>
+
+
+
+                </div>
+            }
+
+
            
         </div>  
     </div>

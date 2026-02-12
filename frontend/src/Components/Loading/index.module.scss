@@ -1,0 +1,190 @@
+
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  //background: var(--bg);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+}
+
+.container {
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    gap: 30px
+}
+
+/* big pixel-ish wordmark */
+.text {
+    font-family: "Pixelify Sans";
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    font-size: clamp(36px, 7vw, 75px);
+    color: var(--lilac);
+
+    /* makes it feel more “blocky” */
+    text-transform: uppercase;
+    text-shadow: 3px 3px 0 var(--pink3);
+}
+
+.bar {
+    width: min(600px, 92vw); /* pick a size you like */
+    height: 50px;
+    position: relative;
+    //background: white;
+}
+
+/* pixel border layer */
+.bar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+
+    /* IMPORTANT: don't paint over the interior */
+    background: transparent;
+
+    border-left: 25px solid var(--magenta);
+    border-right: 25px solid var(--magenta);
+    border-top: 12px solid var(--magenta);
+    border-bottom: 12px solid var(--magenta);
+
+    --p: 6px;
+    clip-path: polygon(
+        /* ─── TOP LEFT STAIR ─── */
+        0 calc(var(--p) * 3),
+        var(--p) calc(var(--p) * 3),
+        var(--p) calc(var(--p) * 2),
+        calc(var(--p) * 2) calc(var(--p) * 2),
+        calc(var(--p) * 2) var(--p),
+        calc(var(--p) * 3) var(--p),
+        calc(var(--p) * 3) 0,
+
+        /* ─── TOP EDGE ─── */
+        calc(100% - calc(var(--p) * 3)) 0,
+
+        /* ─── TOP RIGHT STAIR ─── */
+        calc(100% - calc(var(--p) * 3)) var(--p),
+        calc(100% - calc(var(--p) * 2)) var(--p),
+        calc(100% - calc(var(--p) * 2)) calc(var(--p) * 2),
+        calc(100% - var(--p)) calc(var(--p) * 2),
+        calc(100% - var(--p)) calc(var(--p) * 3),
+        100% calc(var(--p) * 3),
+
+        /* ─── RIGHT EDGE ─── */
+        100% calc(100% - calc(var(--p) * 3)),
+
+        /* ─── BOTTOM RIGHT STAIR ─── */
+        calc(100% - var(--p)) calc(100% - calc(var(--p) * 3)),
+        calc(100% - var(--p)) calc(100% - calc(var(--p) * 2)),
+        calc(100% - calc(var(--p) * 2)) calc(100% - calc(var(--p) * 2)),
+        calc(100% - calc(var(--p) * 2)) calc(100% - var(--p)),
+        calc(100% - calc(var(--p) * 3)) calc(100% - var(--p)),
+        calc(100% - calc(var(--p) * 3)) 100%,
+
+        /* ─── BOTTOM EDGE ─── */
+        calc(var(--p) * 3) 100%,
+
+        /* ─── BOTTOM LEFT STAIR ─── */
+        calc(var(--p) * 3) calc(100% - var(--p)),
+        calc(var(--p) * 2) calc(100% - var(--p)),
+        calc(var(--p) * 2) calc(100% - calc(var(--p) * 2)),
+        var(--p) calc(100% - calc(var(--p) * 2)),
+        var(--p) calc(100% - calc(var(--p) * 3)),
+        0 calc(100% - calc(var(--p) * 3))
+    );
+
+}
+
+
+/* the filling bar */
+.fill {
+    position: absolute;
+    background: var(--darkpink);
+    left: 28.4px;
+    top: 15px;
+    height: calc(100% - 30px);  /* 15 + 15 */
+    width: 0;
+    animation: fillSteps 1.8s steps(24, end) infinite;
+    //border-radius: 25px;
+    overflow: hidden;
+
+    --p: 4px;
+    clip-path: polygon(
+        /* ─── TOP LEFT STAIR ─── */
+        0 calc(var(--p) * 3),
+        var(--p) calc(var(--p) * 3),
+        var(--p) calc(var(--p) * 2),
+        calc(var(--p) * 2) calc(var(--p) * 2),
+        calc(var(--p) * 2) var(--p),
+        calc(var(--p) * 3) var(--p),
+        calc(var(--p) * 3) 0,
+
+        /* ─── TOP EDGE ─── */
+        calc(100% - calc(var(--p) * 3)) 0,
+
+        /* ─── TOP RIGHT STAIR ─── */
+        calc(100% - calc(var(--p) * 3)) var(--p),
+        calc(100% - calc(var(--p) * 2)) var(--p),
+        calc(100% - calc(var(--p) * 2)) calc(var(--p) * 2),
+        calc(100% - var(--p)) calc(var(--p) * 2),
+        calc(100% - var(--p)) calc(var(--p) * 3),
+        100% calc(var(--p) * 3),
+
+        /* ─── RIGHT EDGE ─── */
+        100% calc(100% - calc(var(--p) * 3)),
+
+        /* ─── BOTTOM RIGHT STAIR ─── */
+        calc(100% - var(--p)) calc(100% - calc(var(--p) * 3)),
+        calc(100% - var(--p)) calc(100% - calc(var(--p) * 2)),
+        calc(100% - calc(var(--p) * 2)) calc(100% - calc(var(--p) * 2)),
+        calc(100% - calc(var(--p) * 2)) calc(100% - var(--p)),
+        calc(100% - calc(var(--p) * 3)) calc(100% - var(--p)),
+        calc(100% - calc(var(--p) * 3)) 100%,
+
+        /* ─── BOTTOM EDGE ─── */
+        calc(var(--p) * 3) 100%,
+
+        /* ─── BOTTOM LEFT STAIR ─── */
+        calc(var(--p) * 3) calc(100% - var(--p)),
+        calc(var(--p) * 2) calc(100% - var(--p)),
+        calc(var(--p) * 2) calc(100% - calc(var(--p) * 2)),
+        var(--p) calc(100% - calc(var(--p) * 2)),
+        var(--p) calc(100% - calc(var(--p) * 3)),
+        0 calc(100% - calc(var(--p) * 3))
+    );
+}
+
+.fill::after {
+    content: "";
+    position: absolute;
+    background: var(--pink);
+    //border-radius: 999px;
+    top: 3px;
+    left: 15px;
+    width: 20px;
+    height: 10px;
+}
+
+
+
+.fill::before {
+    content: "";
+    position: absolute;
+    background: var(--brightpink);
+    height: 40%;
+    width: 95%;
+    
+
+}
+
+/* fill to near the end, pause, then reset */
+@keyframes fillSteps {
+  0%   { width: 0; }
+  70%  { width: 90.5%; }
+  100% { width: 90.5%; }
+}

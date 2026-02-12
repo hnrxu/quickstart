@@ -2,6 +2,7 @@
     display: flex;
     width:100%;
     flex-direction: column;
+    position: relative
    
 
 }
@@ -19,4 +20,37 @@
     height: 200px;
     flex-grow: 1;
 }
+
+.container {
+  position: relative;
+  min-height: 300px; // stops layout jump during fade
+}
+
+.panel {
+    position: absolute;
+    inset: 0;
+    transition: opacity 1s ease-out, transform 1s ease-out;
+    background-color: var(--lavender);
+    width: 100vw;
+    height: 100vh;
+    }
+
+.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.hide {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+
+
+
+
+
+
 

@@ -49,6 +49,13 @@ public class TransactionsResource {
         int maxAttempts = 15;      // don’t hang forever
         int attempt = 0;
 
+        if (QuickstartApplication.accessToken == null || QuickstartApplication.accessToken.isBlank()) {
+                throw new javax.ws.rs.WebApplicationException("No access token set", 400);
+        }
+        if (QuickstartApplication.itemId == null || QuickstartApplication.itemId.isBlank()) {
+            throw new javax.ws.rs.WebApplicationException("No itemId set", 400);
+        }
+
         List<Transaction> addedTransactions = new ArrayList<>();
         List<Transaction> modifiedTransactions = new ArrayList<>();
         List<RemovedTransaction> removedTransactions = new ArrayList<>();
@@ -72,6 +79,10 @@ public class TransactionsResource {
                     .cursor(cursor);
 
                 Response<TransactionsSyncResponse> response = plaidClient.transactionsSync(request).execute();
+                if (!response.isSuccessful()) {
+                    String err = response.errorBody() != null ? response.errorBody().string() : "(no errorBody)";
+                    throw new IOException("Plaid /transactions/sync failed: HTTP " + response.code() + " " + err);
+                }
                 TransactionsSyncResponse responseBody = response.body();
                 if (responseBody == null) throw new IOException("Null Plaid response body");
 

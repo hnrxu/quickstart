@@ -46,3 +46,21 @@ html, body {
   margin: 0 auto;
 }
 
+.panel {
+  position: absolute;
+  inset: 0;
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.hide {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+

@@ -8,6 +8,7 @@
     margin-right: 40px;
     border-radius: 15px;
     gap:40px;
+    min-width: 200px;
     
    
     
@@ -121,7 +122,9 @@
 .catFreqRank {
   position: absolute;
   top: 70px;
-  right: 50px;
+  right: 12px;
+  width: min(270px, calc(100% - 24px));
+  box-sizing: border-box;
 
   display: flex;
   flex-direction: column;
@@ -129,12 +132,13 @@
   align-items: center;
 
 
+
   //padding: 15px 50px;
   //border-radius: 500px;
 
   //background: rgba(255, 255, 255, 0.85);
   //backdrop-filter: blur(6px);
-  width:270px;
+  //width:270px;
   //height: 150px;
 
   background: var(--lavender);

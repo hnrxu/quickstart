@@ -66,6 +66,7 @@ public class RemoveItemResource {
             
 
             QuickstartApplication.accessToken = null;
+            QuickstartApplication.itemId = null;
             return Response.ok("{\"ok\":true}").build();
 
         } catch (Exception e) {
