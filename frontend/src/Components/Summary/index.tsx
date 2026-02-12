@@ -125,9 +125,11 @@ const SummaryWidget = ({freqCategories, spentCategories, freqStores, spentStores
     return <div className={styles.outerContainer}>
         <div className={styles.summariesContainer}>
 
+            
             <div className={styles.catfreqChartContainerShadow}>
 
             <div className={styles.catfreqChartContainer}>
+            <div className={styles.catfreqChartInnerContainer}>
                 <div className={styles.title}>
                     <b>Most Frequent Expense Categories</b>
                 </div>
@@ -184,6 +186,7 @@ const SummaryWidget = ({freqCategories, spentCategories, freqStores, spentStores
                             </Bar> 
                         </BarChart>
                     </ResponsiveContainer>
+                </div>
                 </div>
             </div>
 

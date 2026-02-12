@@ -7,6 +7,18 @@ $threads-font-path: "~plaid-threads/fonts";
 
 * {
   box-sizing: border-box;
+  
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    cursor: pointer; 
+}
+
+.App {
+    height: 100vh;  // Use this instead
 }
 
 
@@ -16,21 +28,21 @@ $threads-font-path: "~plaid-threads/fonts";
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  min-width: 70 * $unit;
-  max-width: none;
+
   //max-width: 120 * $unit;
   margin: 0 auto;
   width:100%;
+  min-height: 100vh;
   background-color: var(--outline);
   
 }
 
 .headerContainer {
-display: flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 70 * $unit;
-  max-width: 120 * $unit;
+  width: 100%;
+  height: 100%;
   margin: 0 auto;
 }
 

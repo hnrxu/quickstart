@@ -54,6 +54,7 @@ const Dashboard = () => {
         );
 
         const transactionData = await response.json();
+        console.log("freqCategories raw", transactionData);
         setTransactions(transactionData.latest_transactions);
        
 
@@ -79,6 +80,8 @@ const Dashboard = () => {
     }
 
     const loadData = async () => { // need this await gguards to make sure transactions finished fetching before calling summary
+        await new Promise(resolve => setTimeout(resolve, 500)) /// because somtime the dashboard fetches transacitons before accesstoken is set
+        // change to retry instead of wait to make more robust
         await fetchTransactions();
         await fetchSummaryData();
     }

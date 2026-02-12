@@ -16,7 +16,7 @@ const App = () => {
         useContext(Context);
    
 
-    //const [isLoading, setLoading] = useState(true);
+    const [isLoading, setLoading] = useState(true);
 
     const getInfo = useCallback(async () => {
         // check this
@@ -139,14 +139,14 @@ const App = () => {
             if (isUserTokenFlow) {
                 await generateUserToken();
             } // check this
-            if (!hasAccessToken || accessToken == null) {
+            if (!hasAccessToken) {
                 await generateToken(paymentInitiation);
             }
 
-            //setLoading(false);
-             console.log("Current itemId:", itemId);  // Check if itemId exists
-              console.log("Current itemId:", hasAccessToken);  // Check if itemId exists
-        console.log("Current accessToken:", accessToken);  // Check token too
+            setLoading(false);
+        //      console.log("Current itemId:", itemId);  // Check if itemId exists
+        //       console.log("Current itemId:", hasAccessToken);  // Check if itemId exists
+        // console.log("Current accessToken:", accessToken);  // Check token too
 
         };
 
@@ -157,17 +157,19 @@ const App = () => {
 
 
 
-    // if (isLoading) {
-    //     return (
-    //         <div className={styles.App}>
-    //             <div className={styles.container}>
-    //             <div style={{ textAlign: 'center', padding: '50px' }}>
-    //                 Loading...
-    //             </div>
-    //             </div>
-    //         </div>
-    //     );
-    // }
+    if (isLoading) {
+        return (
+        <div className={styles.App}>
+        <div className={styles.container}>
+            <div className={styles.headerContainer}>
+        
+                Loading!!!!!!!!!
+                
+            </div>
+        </div>
+        </div>
+    );
+    }
     
 
 
@@ -175,11 +177,13 @@ const App = () => {
     return (
         <div className={styles.App}>
         <div className={styles.container}>
+            {!linkSuccess && ( 
             <div className={styles.headerContainer}>
-        
+            
                 <Header />
                 
             </div>
+            )}
             {linkSuccess && (
             <>
             {!isPaymentInitiation && itemId && 

@@ -21,22 +21,37 @@
     
 }
 
-.catfreqChartContainer {
+.catfreqChartInnerContainer {
+    //border-right: 5px solid var(--outline2);
+    //border-top: 5px solid var(--outline2);
+    border-left: 5px solid var(--pink3);
+    border-bottom: 5px solid var(--pink3);
+    
+
     padding: 30px;
     padding-left: 0px;
     padding-right: 0px;
-    //border-radius: 25px;
     background-color: var(--lilac);
     width:100%;
+    height:100%
+}
+
+.catfreqChartContainer {
+    
+    //border-radius: 25px;
+    background-color: var(--lilac);
+
     //box-shadow: 0px 0px 5px 5px var( --shadow-color-2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 
-    --p: 4px;
+    --p: 8px;
 
-    padding: 20px 0px;
-    border: 4px solid var(--pink);
-    border-bottom: 4px solid var(--pink4);
-    border-left: 4px solid var(--pink4);
+    //border: 4px solid var(--outline);
+    border-bottom: 10px solid var(--outline2);
+    border-left: 10px solid var(--outline2);
+    border-right: 5px solid var(--outline2);
+    border-top: 5px solid var(--outline2);
+    
 
 
     clip-path: polygon(
@@ -62,12 +77,13 @@
 
 .catfreqChartContainerShadow{
   display: inline-block;
-  filter: drop-shadow(-8px 8px 0 var(--outline3));
+  filter: drop-shadow(-6px 6px 0 var(--darkpurple));
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   // used to stabilize hovering
   transform: translateZ(0);
   will-change: transform, filter;
+  
 
 }
 

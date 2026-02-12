@@ -1,71 +1,87 @@
 @import "~plaid-threads/scss/variables";
 
 .grid {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  margin-bottom: 2 * $unit;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    margin: auto;
+    background-color: var(--main-color);
+    align-items: center;
+    gap: 20px;
+
 }
 
 .title {
-  margin-top: 9 * $unit;
-  margin-bottom: 0;
-  font-weight: 800;
-  height: 6 * $unit;
-}
+    font-family: "Pixelify Sans";
+    font-size: 80px;
+    font-weight: bold;
+    color: var(--lilac);
+    text-shadow:
+        3px 3px 0px var(--outline3),
+        6px 6px 0px var(--outline4),
+        9px 9px 0px var(--outline2);
 
-.subtitle {
-  margin-top: 0;
-  margin-bottom: 3 * $unit;
-}
+    margin-bottom: 0px;
+    font-weight: 800;
+    text-align: center;
+    transition: transform 0.1s;
 
-.introPar {
-  width: 100%;
-  font-size: 2 * $unit;
-  margin: 2 * $unit 0;
+    &:hover {
+            
+            transform: translate(2px, 2px) scale(1.02);
+        }
+
+
 }
 
 .linkButton {
-  margin-top: 3 * $unit;
+    margin-top: 0;
+    margin-bottom: 15vh;
+    
+    button {
+        background-color: var(--pink5);
+        font-family: "Pixelify Sans";
+        color: var(--outline2);
+        text-shadow:
+            2px 2px 0px var(--shadow);
+
+        font-size: 24px;
+        font-weight: 800;
+        padding: 16px 40px;
+        border: 4px solid var(--outline);
+        width: 300px;
+        cursor: pointer;
+        position: relative;
+        
+        // Retro 3D layered shadow effect
+        box-shadow:
+            4px 4px 0px var(--outline2),
+            8px 8px 0px var(--outline3),
+            12px 12px 0px var(--outline4);
+
+        // Smooth transition for press effect
+        transition: transform 0.1s, box-shadow 0.1s;
+
+        &:hover {
+            background-color: var(--pink3);
+            box-shadow:
+                2px 2px 0px var(--outline2),
+                4px 4px 0px var(--outline3),
+                6px 6px 0px var(--outline4);
+            transform: translate(2px, 2px);
+        }
+
+        &:active {
+            background-color: var(--pink4);
+            box-shadow: none;
+            transform: translate(12px, 12px);  // Pushes down fully on click
+        }
+    }
 }
 
-.itemAccessContainer {
-  display: flex;
-  flex-direction: column;
-  height: auto;
-  width: 100%;
-  box-shadow: $shadow-small;
-  margin-top: 3 * $unit;
-  border-radius: 2px;
-}
 
-.itemAccessRow {
-  display: flex;
-  border: 1px solid $black200;
-  height: 50%;
-  margin: 0;
 
-  &:last-child {
-    border-top: 0px;
-  }
-}
 
-.idName {
-  padding: 2 * $unit 3 * $unit 2 * $unit 5 * $unit;
-  flex: 1;
-  font-weight: bold;
-  font-family: $font-stack-monospace;
-  color: $black1000;
-}
 
-.tokenText {
-  padding: 2 * $unit 3 * $unit 2 * $unit 0;
-  flex: 5;
-  font-family: $font-stack-monospace;
-}
-
-.requests {
-  margin-top: 7 * $unit;
-  font-size: 2 * $unit;
-}

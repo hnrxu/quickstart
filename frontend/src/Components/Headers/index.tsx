@@ -26,20 +26,11 @@ const Header = () => {
   return (
     <div className={styles.grid}>
      
-      {!linkSuccess ? (
+      {!linkSuccess && (
         <>
           <h3 className={styles.title}>Plaid Quickstart</h3>
 
-          <h4 className={styles.subtitle}>
-            A sample end-to-end integration with Plaid GOOGOOGAGA
-          </h4>
-          <p className={styles.introPar}>
-            The Plaid flow begins when your user wants to connect their bank
-            account to your app. Simulate this by clicking the button below to
-            launch Link - the client-side component that your users will
-            interact with in order to link their accounts to Plaid and allow you
-            to access their accounts via the Plaid API.
-          </p>
+          
           {/* message if backend is not running and there is no link token */}
           {!backend ? (
             <Callout warning>
@@ -93,103 +84,9 @@ const Header = () => {
             </div>
           )}
         </>
-      ) : (
-        <>
-          {isPaymentInitiation ? (
-            <>
-              <h4 className={styles.subtitle}>
-                Congrats! Your payment is now confirmed.
-                <p />
-                <Callout>
-                  You can see information of all your payments in the{" "}
-                  <InlineLink
-                    href="https://dashboard.plaid.com/activity/payments"
-                    target="_blank"
-                  >
-                    Payments Dashboard
-                  </InlineLink>
-                  .
-                </Callout>
-              </h4>
-              <p className={styles.requests}>
-                Now that the 'payment_id' stored in your server, you can use it
-                to access the payment information:
-              </p>
-            </>
-          ) : (
-            /* If not using the payment_initiation product, show the item_id and access_token information */ <>
-              {/* {isItemAccess ? (
-                <h4 className={styles.subtitle}>
-
-                  CHECK THIS Congrats! By linking an account, you have created an{" "}
-                  <InlineLink
-                    href="http://plaid.com/docs/quickstart/glossary/#item"
-                    target="_blank"
-                  >
-                    Item
-                  </InlineLink>
-                  .
-                </h4>
-              ) : userToken || userId ? (
-                <h4 className={styles.subtitle}>
-                  Congrats! You have successfully linked data to a User.
-                </h4>
-              ) : (
-                <h4 className={styles.subtitle}>
-                  <Callout warning>
-                    Unable to create an item. Please check your backend server
-                  </Callout>
-                </h4>
-              )} */}
-
-
-              {/* <div className={styles.itemAccessContainer}>
-                {itemId && (
-                  <p className={styles.itemAccessRow}>
-                    <span className={styles.idName}>item_id</span>
-                    <span className={styles.tokenText}>{itemId}</span>
-                  </p>
-                )}
-
-                {accessToken && (
-                  <p className={styles.itemAccessRow}>
-                    <span className={styles.idName}>access_token</span>
-                    <span className={styles.tokenText}>{accessToken}</span>
-                  </p>
-                )}
-
-                {userToken && (
-                  <p className={styles.itemAccessRow}>
-                    <span className={styles.idName}>user_token</span>
-                    <span className={styles.tokenText}>{userToken}</span>
-                  </p>
-                )}
-
-                {userId && (
-                  <p className={styles.itemAccessRow}>
-                    <span className={styles.idName}>user_id</span>
-                    <span className={styles.tokenText}>{userId}</span>
-                  </p>
-                )}
-              </div> */}
-
-              
-              {(isItemAccess || userToken || userId) && (
-                <div className={styles.requests}>
-                   
-                {/* CHECK THIS*/}
-                  {/* Now that you have {accessToken && "an access_token"}
-                  {accessToken && (userToken || userId) && " and "}
-                  {userToken && "a user_token"}
-                  {userToken && userId && " and "}
-                  {userId && "a user_id"}, you can make all of the
-                  following requests: */}
-                </div>
-              )}
-            </>
-          )}
-        </>
-      )}
+      )
+    
+      }
     </div>
   );
 };

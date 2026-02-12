@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import { usePlaidLink } from "react-plaid-link";
 import Button from "plaid-threads/Button";
+import styles from "./index.module.scss";
 
 import Context from "../../Context";
 
@@ -91,9 +92,12 @@ const Link = () => {
   }, [ready, open, isOauth]);
 
   return (
-    <Button type="button" large onClick={() => open()} disabled={!ready}>
-      Launch Link
-    </Button>
+
+    <button type="button" onClick={() => open()} disabled={!ready}>
+    Connect Bank
+    </button>
+
+
   );
 };
 
