@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.plaid.client.request.PlaidApi;
 import com.plaid.client.model.TransactionsSyncRequest;
 import com.plaid.client.model.TransactionsSyncResponse;
@@ -101,6 +102,7 @@ public class TransactionsResource {
         // store whatever we have on the final attempt
         //store in redis
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         String jedisKey = "plaidTransactions:" + QuickstartApplication.itemId;
         try (Jedis jedis = new Jedis(URI.create(System.getenv("REDIS_URL")))) {
             for (Transaction t: addedTransactions) {

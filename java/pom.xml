@@ -22,7 +22,6 @@
   </properties>
   <dependencyManagement>
     <dependencies>
-
       <dependency>
         <groupId>io.dropwizard</groupId>
         <artifactId>dropwizard-bom</artifactId>
@@ -32,6 +31,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>redis.clients</groupId>
@@ -39,6 +39,10 @@
       <version>5.1.0</version>
     </dependency>
     <dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+    </dependency>
       <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-core</artifactId>
     </dependency>
