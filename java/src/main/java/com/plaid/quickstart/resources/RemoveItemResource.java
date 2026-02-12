@@ -1,6 +1,7 @@
 package com.plaid.quickstart.resources;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 
 import javax.ws.rs.FormParam;
@@ -12,8 +13,13 @@ import com.plaid.client.model.ItemPublicTokenExchangeRequest;
 import com.plaid.client.model.ItemPublicTokenExchangeResponse;
 import com.plaid.client.model.ItemRemoveRequest;
 import com.plaid.client.model.ItemRemoveResponse;
+import com.plaid.client.model.RemovedTransaction;
+import com.plaid.client.model.Transaction;
 import com.plaid.client.request.PlaidApi;
 import com.plaid.quickstart.QuickstartApplication;
+
+import redis.clients.jedis.Jedis;
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -31,6 +37,14 @@ public class RemoveItemResource {
     @POST
     public Response removeItem() {
         TokenStore.deleteToken();
+
+        // refactor this
+        String jedisKey = "plaidTransactions:" + QuickstartApplication.itemId;
+        try (Jedis jedis = new Jedis(URI.create(System.getenv("REDIS_URL")))) {
+            jedis.del(jedisKey);
+            jedis.del("savedCursor:" + QuickstartApplication.itemId);
+        }
+        /////////
         
         if (QuickstartApplication.accessToken == null) {
             return Response.status(400).entity("{\"error\":\"No item to remove\"}").build();
