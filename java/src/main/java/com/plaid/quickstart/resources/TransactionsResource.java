@@ -46,7 +46,7 @@ public class TransactionsResource {
     @GET
     public TransactionsResponse getTransactions() throws IOException, InterruptedException {
         int target = 100;          // what you consider “ready”
-        int maxAttempts = 6;      // don’t hang forever
+        int maxAttempts = 15;      // don’t hang forever
         int attempt = 0;
 
         List<Transaction> addedTransactions = new ArrayList<>();
