@@ -92,7 +92,6 @@ public class TransactionsResource {
                 // Not enough yet — wait briefly and try again
                 tempCursor = cursor;
                 attempt++;
-                added.sort(new CompareTransactionDate());
                 addedTransactions = added;
                 modifiedTransactions = modified;
                 removedTransactions = removed;
@@ -134,6 +133,7 @@ public class TransactionsResource {
 
 
 
+        finalTransactions.sort(new CompareTransactionDate()); // sort transactions
         PlaidReader plaidReader = new PlaidReader(finalTransactions);
         TransactionLogHost.getInstance().setLog(plaidReader.parseTransactionLog());
 
